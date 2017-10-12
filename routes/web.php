@@ -34,6 +34,9 @@ Route::group(['middleware'=>'admin.login'],function(){
     Route::post('/admin/disableadmin','AdminController@disableAdmin');
     /*启用用户*/
     Route::post('/admin/enableadmin','AdminController@enableAdmin');
+    /*获取用户信息*/
+    Route::post('/admin/getadminInfo','AdminController@getAdminInfo');
+    Route::post('/admin/editadmin','AdminController@editAdmin');
     /*
     Route::get('/admin/accesslist','AdminController@accessList');
     Route::post('/admin/addAccess','AdminController@addAccess');

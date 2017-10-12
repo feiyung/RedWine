@@ -43,6 +43,33 @@ class AdminController extends Controller
 
 
     }
+
+    /*获取用户信息*/
+    public function getAdminInfo(){
+        $admin = new Admin();
+        $input = Input::all();
+        $result = $admin->getInfo(['ad_id'=>$input['id']]);
+        trueAjax('', $result);
+    }
+
+    /*编辑用户*/
+    public function editAdmin(){
+        $admin = new Admin();
+        $input = Input::all();
+        $data['ad_name'] = $input['uname'];
+        $data['ad_password'] = md5($input['pwd']);
+        $data['is_super'] = isset($input['issuper']) ? $input['issuper'] : 0;
+        if($input['pwd']!=$input['repwd']){
+            falseAjax('两次密码不一致，请重新输入！');
+        }
+        $result = $admin->updateInfo($input['id'],$data);
+        if($result){
+            trueAjax('更新用户成功！');
+        }else{
+            falseAjax('更新用户失败');
+        }
+
+    }
     /*登录页面*/
     public function login_page(){
         return view('login');
@@ -71,6 +98,7 @@ class AdminController extends Controller
         }
         session(['info'=>json_encode($info)]);
         Session::save();
+        $admin->loginTime($info->ad_id);
         trueAjax('');
     }
 

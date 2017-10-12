@@ -55,5 +55,20 @@ class Admin extends Model
     public function enabled($id){
         return $this->where(['ad_id'=>$id])->update(['is_normal'=>self::STATE_NORMAL]);
     }
+    /*更新登录时间次数*/
+
+    public function loginTime($id){
+        $data = $this->getInfo(['ad_id'=>$id]);
+        $d['login_time'] = time();
+        $d['login_num'] = $data->login_num + 1;
+
+        return $this->where(['ad_id'=>$id])->update($d);
+    }
+
+    /*更新用户信息*/
+    public function updateInfo($id,$data){
+        $result = $this->where(['ad_id'=>$id])->update($data);
+        return $result;
+    }
 
 }
