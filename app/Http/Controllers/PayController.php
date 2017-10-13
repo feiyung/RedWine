@@ -17,7 +17,7 @@ class PayController extends  Controller
     'partner' => '2088421921862366',  //合作身份者ID，签约账号，以2088开头由16位纯数字组成的字符串
     'key' => 'ie8ylvb9syxmjtyn6dgll3ismqn7pxu4', //MD5密钥，安全检验码，由数字和字母组成的32位字符串
     'notify_url' => "http://redwine.zhangdashu.com/admin/notify", //回调路径
-    'return_url' => "http://redwine.zhangdashu.com/orderlist", //返回路径
+    'return_url' => "http://redwine.zhangdashu.com/admin/orderlist", //返回路径
     'transport' => 'http',//访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
     'service' => "create_forex_trade"// 产品类型，无需修改
     ];
