@@ -96,10 +96,17 @@ class AdminController extends Controller
         if (!$info['is_normal']) {
             falseAjax('该用户处于不可登录状态,详情请联系管理员');
         }
-        session(['info'=>json_encode($info)]);
+        session(['info'=>json_encode($info),'ad_name'=>$info->ad_name]);
         Session::save();
         $admin->loginTime($info->ad_id);
         trueAjax('');
+    }
+
+    /*用户退出*/
+    public function loginout(){
+        session(['info' => null]);
+        Session::save();
+        return redirect('/');
     }
 
     /*
@@ -108,9 +115,11 @@ class AdminController extends Controller
     public function adminList(){
         $admin = new Admin();
         $list = $admin->getAdminList();
+        $info = json_decode(session('info'),true);
+        $super =  $info['is_super'];
         //dd($list);
         //dd(empty($list->toArray()));
-        return view('userlist',compact('list'));
+        return view('userlist',compact('list','super'));
     }
 
     /*用户禁用*/

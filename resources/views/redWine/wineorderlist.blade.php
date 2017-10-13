@@ -149,9 +149,9 @@
                                             {{--<button type="button" class="editw btn btn-info btn-rad md-trigger"
                                                     data-modal="edit" data-id="{{$n->id}}">编辑</button>--}}
                                             @if($n->order_status==0)
-                                            <a href="{{url("/admin/pay/$n->id")}}"><button type="button" class="btn btn-primary btn-rad"
+                                            <a href="{{url("/admin/pay/$n->id")}}"><button type="button" class="btn btn-primary btn-rad btn-sm"
                                             >去付款</button></a>@endif
-                                            <button type="button" class="btn btn-info btn-rad md-trigger detail"
+                                            <button type="button" class="btn btn-info btn-rad md-trigger detail btn-sm"
                                                     data-modal="detail" data-id="{{$n->id}}">详情</button>
                                         </td>
                                     </tr>
@@ -161,6 +161,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="row"><div class="pull-right" style="padding-right: 20px;">{{$alllist->links()}}</div></div>
                     </div>
 
 

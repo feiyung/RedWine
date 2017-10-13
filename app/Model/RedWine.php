@@ -37,7 +37,7 @@ class RedWine extends Model
     /*获取列表*/
 
     public function getAlllist(){
-        $result = $this->orderBy('id','asc')->get();
+        $result = $this->orderBy('create_time','desc')->paginate(20);
         return $result;
     }
 

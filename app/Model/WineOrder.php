@@ -24,7 +24,7 @@ class WineOrder extends Model
      */
 
     public function getOrderList(){
-        $result = $this->orderBy('create_time','desc')->get();
+        $result = $this->orderBy('create_time','desc')->paginate(20);;
         return $result;
     }
     /*

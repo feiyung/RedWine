@@ -26,6 +26,8 @@ Route::get('/','AdminController@login_page');
 /*登录方法*/
 Route::post('/admin/login','AdminController@login');
 Route::group(['middleware'=>'admin.login'],function(){
+    /*退出登录*/
+    Route::get('/admin/loginout','AdminController@loginout');
     /*添加用户*/
     Route::post('/admin/adduser','AdminController@Add_user');
     /*用户列表*/

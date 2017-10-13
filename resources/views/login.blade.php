@@ -7,19 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="{{asset('public/images/favicon.png')}}">
+    <link rel="shortcut icon" href="{{asset('images/favicon.png')}}">
 
     <title>红酒管理系统</title>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:300,200,100' rel='stylesheet' type='text/css'>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{asset('public/js/bootstrap/dist/css/bootstrap.css')}}" rel="stylesheet">
+    <link href="{{asset('js/bootstrap/dist/css/bootstrap.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('public/css/style.css')}}" rel="stylesheet" />
+    <link href="{{asset('css/style.css')}}" rel="stylesheet" />
 
 </head>
 
@@ -30,7 +30,7 @@
     <div class="middle-login">
         <div class="block-flat">
             <div class="header">
-                <h3 class="text-center"><img class="logo-img" src="{{asset('public/images/logo.png')}}" alt="logo"/>红酒管理系统</h3>
+                <h3 class="text-center"><img class="logo-img" src="{{asset('images/logo.png')}}" alt="logo"/>红酒管理系统</h3>
             </div>
             <div>
                 <form style="margin-bottom: 0px !important;" class="form-horizontal" action="">
@@ -66,19 +66,19 @@
 
 </div>
 
-<script src="{{asset('public/js/jquery.js')}}"></script>
-<script type="text/javascript" src="{{asset('public/js/behaviour/general.js')}}"></script>
+<script src="{{asset('js/jquery.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/behaviour/general.js')}}"></script>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="{{asset('public/js/behaviour/voice-commands.js')}}"></script>
-<script src="{{asset('public/js/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('public/js/jquery.flot/jquery.flot.js')}}"></script>
-<script type="text/javascript" src="{{asset('public/js/jquery.flot/jquery.flot.pie.js')}}"></script>
-<script type="text/javascript" src="{{asset('public/js/jquery.flot/jquery.flot.resize.js')}}"></script>
-<script type="text/javascript" src="{{asset('public/js/jquery.flot/jquery.flot.labels.js')}}"></script>
-<script type="text/javascript" src="{{asset('public/js/jquery.niftymodals/js/jquery.modalEffects.js')}}"></script>
+<script src="{{asset('js/behaviour/voice-commands.js')}}"></script>
+<script src="{{asset('js/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jquery.flot/jquery.flot.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jquery.flot/jquery.flot.pie.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jquery.flot/jquery.flot.resize.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jquery.flot/jquery.flot.labels.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jquery.niftymodals/js/jquery.modalEffects.js')}}"></script>
 <script>
 
 

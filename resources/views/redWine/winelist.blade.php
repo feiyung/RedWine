@@ -23,7 +23,7 @@
                         <div class="header">
                             {{--<h3>Full-Borders Table</h3>--}}
 
-                            <button class="btn btn-primary btn-flat md-trigger btn-rad btn-lg"
+                            <button class="btn btn-primary btn-flat md-trigger btn-rad"
                                     data-modal="colored-success">添加红酒
                             </button>
 
@@ -240,8 +240,8 @@
                                                 <button type="button" class="enable btn btn-success btn-rad" data-id="{{$n->id}}" onclick="enable(this)">启用</button>
                                             @endif--}}
 
-                                                <button type="button" class="editw btn btn-info btn-rad md-trigger" data-modal="edit" data-id="{{$n->id}}">编辑</button>
-                                            <button type="button" class="btn btn-warning btn-rad md-trigger createw" data-modal="create_order" data-id="{{$n->id}}">创建订单</button>
+                                                <button type="button" class="editw btn btn-info btn-rad md-trigger btn-sm" data-modal="edit" data-id="{{$n->id}}">编辑</button>
+                                            <button type="button" class="btn btn-warning btn-rad md-trigger createw btn-sm" data-modal="create_order" data-id="{{$n->id}}">创建订单</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -250,11 +250,15 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="row"><div class="pull-right" style="padding-right: 20px;">{{$alllist->links()}}</div></div>
+
                     </div>
 
 
                 </div>
             </div>
+
+
 
 
         </div>
@@ -310,7 +314,7 @@
                 if (data.flag) {
                     alertsuccess(data.msg);
                     setTimeout(function () {
-                        location.reload(true);
+                        location.href="{{url('/admin/winelist')}}";
                     }, 1000);
 
                 } else {

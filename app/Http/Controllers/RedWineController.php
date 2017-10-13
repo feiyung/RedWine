@@ -43,9 +43,9 @@ class RedWineController extends Controller
 //        dd($data);
         $result = $redWine->addWine($data);
         if ($result) {
-            trueAjax('添加用户成功！');
+            trueAjax('添加红酒成功！');
         } else {
-            falseAjax('添加用户失败');
+            falseAjax('添加红酒失败');
         }
     }
 
@@ -162,6 +162,7 @@ class RedWineController extends Controller
         }
         trueAjax('', $res);
     }
+
 
 
 }

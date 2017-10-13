@@ -22,3 +22,4 @@ function falseAjax($msg,$data=[]){
     ];
     exit(json_encode($info));
 }
+

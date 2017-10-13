@@ -22,10 +22,11 @@
                     <div class="block-flat">
                         <div class="header">
                             {{--<h3>Full-Borders Table</h3>--}}
-
-                            <button class="btn btn-primary btn-flat md-trigger btn-rad btn-lg"
+                            @if($super)
+                            <button class="btn btn-primary btn-flat md-trigger btn-rad"
                                     data-modal="colored-success">添加新用户
                             </button>
+                                @endif
 
                         </div>
                         <div class="md-modal colored-header primary md-effect-3" id="colored-success">
@@ -193,14 +194,19 @@
                                         @endif
                                     </td>
                                     <td style="vertical-align: middle" class="text-right">
+                                        @if($super)
                                         @if($v->is_normal)
-                                            <button type="button" class="btn btn-warning btn-rad" data-id="{{$v->ad_id}}" onclick="disable(this)">禁用</button>
+                                            <button type="button" class="btn btn-warning btn-rad btn-sm" data-id="{{$v->ad_id}}" onclick="disable(this)">禁用</button>
                                         @else
-                                            <button type="button" class="btn btn-success btn-rad" data-id="{{$v->ad_id}}" onclick="enable(this)">启用</button>
+                                            <button type="button" class="btn btn-success btn-rad btn-sm" data-id="{{$v->ad_id}}" onclick="enable(this)">启用</button>
                                         @endif
-                                        <button type="button" class="btn btn-info btn-rad md-trigger edit" data-modal="edit" data-id="{{$v->ad_id}}">编辑</button>
+                                        <button type="button" class="btn btn-info btn-rad md-trigger edit btn-sm" data-modal="edit" data-id="{{$v->ad_id}}">编辑</button>
                                         {{--<button type="button" class="btn btn-primary btn-rad">权限分组</button>--}}
                                         {{--<button type="button" class="btn btn-danger btn-rad">删除</button>--}}
+                                            @else
+                                            <button type="button" class="btn btn-info btn-rad disabled btn-sm">无操作</button>
+                                            @endif
+
                                     </td>
                                 </tr>
                                 @endforeach
