@@ -110,4 +110,16 @@ class Alipay_interface
     }
 
 
+    public function notify()
+    {
+        $alipayNotify = new AlipayNotify($this->config);
+
+        $verify_result = $alipayNotify->verifyNotify();
+
+        if ($verify_result) {//验证成功
+            return true;
+        } else { //验证成功
+            return false;
+        }
+    }
 }

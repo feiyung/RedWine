@@ -31,14 +31,14 @@ class PayController extends  Controller
     }
 
     public function notify(){
-        $AlipayNotify = new \AlipayNotify($alipay_config = self::ALIPAY_INTERNATION);
-        $result = $AlipayNotify->verifyNotify();
+        $AlipayNotify = new \Alipay_interface($alipay_config = self::ALIPAY_INTERNATION);
         $wineOrder = new WineOrder();
+        $result = $AlipayNotify->notify();
         if($result){
             $res = $wineOrder->getorder($_POST['out_trade_no']);
-            if($res['order_status']!==1){
-                $result = $wineOrder->updateOrder($_POST['out_trade_no']);
-                if(!$result){
+            if($res['order_status']!=1){
+                $data = $wineOrder->updateOrder($_POST['out_trade_no']);
+                if(!$data){
 
                 }
 
