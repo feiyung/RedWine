@@ -35,7 +35,7 @@ class PayController extends  Controller
         $result = $AlipayNotify->verifyNotify();
         $wineOrder = new WineOrder();
         if($result){
-            $res = $wineOrder->getOneorder($_POST['out_trade_no']);
+            $res = $wineOrder->getorder($_POST['out_trade_no']);
             if($res['order_status']!==1){
                 $result = $wineOrder->updateOrder($_POST['out_trade_no']);
                 if(!$result){

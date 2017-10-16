@@ -47,6 +47,13 @@ class WineOrder extends Model
         $result = $this->where(['id'=>$id])->first();
         return $result;
     }
+
+    /*通过订单号获取一条订单*/
+
+    public function getorder($order_num){
+        $result = $this->where(['order_num'=>$order_num])->first();
+        return $result;
+    }
     /*获取订单数量*/
     public function getOrderCount($con){
         $result = $this->where(['order_num'=>$con])->count();
