@@ -110,7 +110,7 @@ class Alipay_interface
     }
 
 
-    public function notify()
+    public function pay_notify()
     {
         $alipayNotify = new AlipayNotify($this->config);
 
