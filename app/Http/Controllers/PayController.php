@@ -36,10 +36,12 @@ class PayController extends  Controller
         $result = $AlipayNotify->notify();
         if($result){
             $res = $wineOrder->getorder($_POST['out_trade_no']);
-            if($res['order_status']!=1){
+            if($res['order_status']==0){
                 $data = $wineOrder->updateOrder($_POST['out_trade_no']);
                 if(!$data){
-
+                    echo "<script>
+                             alert('更新状态失败');
+                          </script>";
                 }
 
 
