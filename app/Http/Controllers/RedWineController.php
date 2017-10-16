@@ -87,7 +87,6 @@ class RedWineController extends Controller
     {
         $wineOrder = new WineOrder();
         $alllist = $wineOrder->getOrderList();
-        dd(session('alipay'));
         return view('redWine.wineorderlist', compact('alllist'));
     }
 
