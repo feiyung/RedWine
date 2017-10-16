@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Model\WineOrder;
+use Illuminate\Support\Facades\Session;
 
 class PayController extends  Controller
 {
@@ -31,6 +32,8 @@ class PayController extends  Controller
     }
 
     public function notify(){
+        session(['alipay'=>json_encode($_POST)]);
+        Session::save();
         $AlipayNotify = new \Alipay_interface($alipay_config = self::ALIPAY_INTERNATION);
         $wineOrder = new WineOrder();
         $result = $AlipayNotify->pay_notify();
