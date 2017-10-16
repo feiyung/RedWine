@@ -32,21 +32,19 @@ class PayController extends  Controller
     }
 
     public function notify(){
-        session(['alipay'=>json_encode($_POST)]);
-        Session::save();
         $AlipayNotify = new \Alipay_interface($alipay_config = self::ALIPAY_INTERNATION);
         $wineOrder = new WineOrder();
-        $result = $AlipayNotify->pay_notify();
-        if($result){
+        /*$result = $AlipayNotify->pay_notify();
+        if($result){*/
             $res = $wineOrder->getorder($_POST['out_trade_no']);
             if($res['order_status']==$wineOrder::ORDER_STATE_NO){
                 $wineOrder->updateOrder($_POST['out_trade_no']);
             }
 
-        }else{
+        /*}else{
             echo "<script>
                  alert('支付失败');location.href='/admin/orderlist';
               </script>";
-        }
+        }*/
     }
 }

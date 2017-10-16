@@ -117,8 +117,6 @@ class AdminController extends Controller
         $list = $admin->getAdminList();
         $info = json_decode(session('info'),true);
         $super =  $info['is_super'];
-
-        dd(session('alipay'));
         //dd($list);
         //dd(empty($list->toArray()));
         return view('userlist',compact('list','super'));
