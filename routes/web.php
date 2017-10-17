@@ -64,10 +64,10 @@ Route::group(['middleware'=>'admin.login'],function(){
     Route::post('/admin/createorder','RedWineController@createOrder');
     /*去支付*/
     Route::get('/admin/pay/{id}','RedWineController@pay')->where('id', '[0-9]+');
-    /*支付宝回调*/
-    Route::match(['get','post'],'/admin/notify','PayController@notify');
     /*订单详情*/
     Route::post('/admin/orderdetail','RedWineController@detail');
 });
+/*支付宝回调*/
+Route::match(['get','post'],'/admin/notify','PayController@notify');
 
 
