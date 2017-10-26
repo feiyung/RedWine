@@ -18,6 +18,59 @@
 
 
                 <div class="col-sm-12 col-md-12 column">
+                    <div class="block-flat">
+                        <div class="header">
+                            {{--<h3>Full-Borders Table</h3>--}}
+
+                            {{--<button class="btn btn-success btn-flat md-trigger btn-rad btn-lg"
+                                    data-modal="colored-success">添加红酒
+                            </button>--}}
+
+                        </div>
+
+                        <div class="content">
+                            <table class="table no-border hover">
+                                <thead class="no-border">
+                                <tr>
+                                    <th>所有订单数</th>
+                                    <th>已付款订单数</th>
+                                    <th class="">未付款订单数</th>
+                                    <th>消费总金额</th>
+                                    <th>已付金额</th>
+                                    <th>未付金额</th>
+                                    <th>退货退款数</th>
+                                    <th class="text-right">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody class="no-border-y">
+
+                                <tr>
+                                    <td style="vertical-align: middle">{{$countall}}</td>
+                                    <td style="vertical-align: middle">{{$countyes}}</td>
+                                    <td style="vertical-align: middle">{{$countno}}</td>
+                                    <td style="vertical-align: middle">&yen;{{number_format($money['all'])}}</td>
+                                    <td style="vertical-align: middle">&yen;{{number_format($money['all']-$money['debt'])}}</td>
+                                    <td style="vertical-align: middle;color:red">&yen;{{number_format($money['debt'])}}</td>
+                                    <td style="vertical-align: middle;">
+                                        {{$countre}}
+                                    </td>
+                                    <td style="vertical-align: middle" class="text-right">
+
+                                        @if($money['debt'])
+                                            <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="paydebt" data-id="">付款</button>
+                                        @endif
+
+
+                                    </td>
+                                </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
 
 
                     <div class="block-flat">
@@ -138,49 +191,6 @@
                             <table class="table no-border hover">
                                 <thead class="no-border">
                                 <tr>
-                                    <th>所有订单数</th>
-                                    <th>已付款订单数</th>
-                                    <th class="">未付款订单数</th>
-                                    <th>消费总金额</th>
-                                    <th>已付金额</th>
-                                    <th>未付金额</th>
-                                    <th>退货退款数</th>
-                                    <th class="text-right">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody class="no-border-y">
-
-                                <tr>
-                                    <td style="vertical-align: middle">{{$countall}}</td>
-                                    <td style="vertical-align: middle">{{$countyes}}</td>
-                                    <td style="vertical-align: middle">{{$countno}}</td>
-                                    <td style="vertical-align: middle">&yen;{{number_format($money['all'])}}</td>
-                                    <td style="vertical-align: middle">&yen;{{number_format($money['all']-$money['debt'])}}</td>
-                                    <td style="vertical-align: middle;color:red">&yen;{{number_format($money['debt'])}}</td>
-                                    <td style="vertical-align: middle;">
-                                        {{$countre}}
-                                    </td>
-                                    <td style="vertical-align: middle" class="text-right">
-
-                                        @if($money['debt'])
-                                            <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="paydebt" data-id="">付款</button>
-                                            @else
-                                            <button type="button" class="btn btn-info btn-rad disabled btn-sm">无操作</button>
-                                        @endif
-
-
-                                    </td>
-                                </tr>
-
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="content">
-                            <table class="table no-border hover">
-                                <thead class="no-border">
-                                <tr>
                                     <th>订单号</th>
                                     <th>红酒名称</th>
                                     <th class="">单价(RMB)</th>
@@ -240,59 +250,7 @@
                         </div>
                         <div class="row"><div class="pull-right" style="padding-right: 20px;">{{$list->links()}}</div></div>
                     </div>
-                    <div class="block-flat">
-                        <div class="header">
-                            {{--<h3>Full-Borders Table</h3>--}}
 
-                            {{--<button class="btn btn-success btn-flat md-trigger btn-rad btn-lg"
-                                    data-modal="colored-success">添加红酒
-                            </button>--}}
-
-                        </div>
-
-                        <div class="content">
-                            <table class="table no-border hover">
-                                <thead class="no-border">
-                                <tr>
-                                    <th>所有订单数</th>
-                                    <th>已付款订单数</th>
-                                    <th class="">未付款订单数</th>
-                                    <th>消费总金额</th>
-                                    <th>已付金额</th>
-                                    <th>未付金额</th>
-                                    <th>退货退款数</th>
-                                    <th class="text-right">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody class="no-border-y">
-
-                                    <tr>
-                                        <td style="vertical-align: middle">{{$countall}}</td>
-                                        <td style="vertical-align: middle">{{$countyes}}</td>
-                                        <td style="vertical-align: middle">{{$countno}}</td>
-                                        <td style="vertical-align: middle">&yen;{{number_format($money['all'])}}</td>
-                                        <td style="vertical-align: middle">&yen;{{number_format($money['all']-$money['debt'])}}</td>
-                                        <td style="vertical-align: middle;color:red">&yen;{{number_format($money['debt'])}}</td>
-                                        <td style="vertical-align: middle;">
-                                            {{$countre}}
-                                        </td>
-                                        <td style="vertical-align: middle" class="text-right">
-
-                                            @if($money['debt'])
-                                                <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="paydebt" data-id="">付款</button>
-                                                @endif
-
-
-                                        </td>
-                                    </tr>
-
-
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
 
 
                 </div>
