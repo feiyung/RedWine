@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-head">
             <h2>用户列表</h2>
             <ol class="breadcrumb">
@@ -38,7 +38,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" role="form" data-parsley-validate="" novalidate="" method="post" action="{{url('admin/add')}}" id="addForm">
+                                    <form class="form-horizontal" role="form"  novalidate="" method="post" action="{{url('admin/add')}}" id="addForm">
                                         {{ csrf_field() }}
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-3 control-label">用户名</label>
@@ -47,7 +47,7 @@
                                                        class="form-control" id="inputEmail3"
                                                        placeholder="长度不超过10位" name="uname"
                                                        data-parsley-id="5250" maxlength="10" minlength="3">
-                                                <ul class="parsley-errors-list" id="parsley-id-5250"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -56,7 +56,7 @@
                                                 <input type="password" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度6~20" name="pwd"
                                                        data-parsley-id="2907" maxlength="20" minlength="6">
-                                                <ul class="parsley-errors-list" id="parsley-id-2907"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -65,7 +65,7 @@
                                                 <input type="password" required="" class="form-control"
                                                        id="inputPassword" placeholder="长度6~20" name="repwd"
                                                        data-parsley-id="2907" maxlength="20" minlength="6">
-                                                <ul class="parsley-errors-list" id="parsley-id-2907"></ul>
+
                                             </div>
                                         </div>
 
@@ -107,7 +107,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" role="form" data-parsley-validate="" novalidate="" method="post" action="{{url('admin/add')}}" id="addForm">
+                                    <form class="form-horizontal" role="form"  novalidate="" method="post" action="{{url('admin/add')}}" id="addForm">
                                         {{ csrf_field() }}
                                         <div class="form-group">
                                             <label for="inputEmail3" class="col-sm-3 control-label">用户名</label>
@@ -116,7 +116,7 @@
                                                        class="form-control" id="inputEmail3"
                                                        placeholder="长度不超过10位" name="uname_e"
                                                        data-parsley-id="5250" maxlength="10" minlength="3">
-                                                <ul class="parsley-errors-list" id="parsley-id-5250"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -125,7 +125,7 @@
                                                 <input type="password" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度6~20" name="pwd_e"
                                                        data-parsley-id="2907" maxlength="20" minlength="6">
-                                                <ul class="parsley-errors-list" id="parsley-id-2907"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -134,7 +134,7 @@
                                                 <input type="password" required="" class="form-control"
                                                        id="inputPassword" placeholder="长度6~20" name="repwd_e"
                                                        data-parsley-id="2907" maxlength="20" minlength="6">
-                                                <ul class="parsley-errors-list" id="parsley-id-2907"></ul>
+
                                             </div>
                                         </div>
 

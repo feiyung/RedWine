@@ -21,11 +21,11 @@ var App = function () {
     skycons.add($("#sun-icon")[0], Skycons.PARTLY_CLOUDY_DAY);
     skycons.play();
 
-  
+
     /*Sparklines*/
     $(".spk1").sparkline([2,4,3,6,7,5,8,9,4,2,6,8,8,9,10], { type: 'bar', width: '80px', barColor: '#4A8CF7'});
     $(".spk2").sparkline([4,6,7,7,4,3,2,1,4,4 ,5,6,5], { type: 'discrete', width: '80', lineColor: '#4A8CF7',thresholdValue: 4,thresholdColor: '#ff0000'});
-    
+
     $(".spk3").sparkline([5,6,7,9,9,5,3,2,2,4,6,7], {
     type: 'line',
     lineColor: '#258FEC',
@@ -33,7 +33,7 @@ var App = function () {
     spotColor: false,
     width: '80px',
     minSpotColor: false,
-    maxSpotColor: false,  
+    maxSpotColor: false,
     highlightSpotColor: '#1e7ac6',
     highlightLineColor: '#1e7ac6'});
 
@@ -150,7 +150,7 @@ var App = function () {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
@@ -159,7 +159,7 @@ var App = function () {
                 opacity: 0.01
               }
               ]
-            } 
+            }
           },
           points: {
             show: true
@@ -187,7 +187,7 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       var plot_statistics2 = $.plot($("#site_statistics2"), [{
         data: pageviews,
         label: "Unique Visits"
@@ -210,7 +210,7 @@ var App = function () {
                 opacity: 0.85
               }
               ]
-            } 
+            }
           },
           shadowSize: 2
         },
@@ -235,7 +235,7 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*Pie Chart*/
       var data = [
       { label: "Google", data: 50},
@@ -246,7 +246,7 @@ var App = function () {
       { label: "Apple", data: 13},
       { label: "Amazon", data: 10},
       { label: "Facebook", data: 5}
-      ]; 
+      ];
 
       $.plot('#piec', data, {
         series: {
@@ -282,7 +282,7 @@ var App = function () {
           show: false
         }
       });
-      
+
       /*COM Chart*/
       var data_com = [
         [1, randValue() - 5],
@@ -305,15 +305,15 @@ var App = function () {
                     "Eta",
                     "Theta"
                 ];
-          
+
       var plot_statistics = $.plot($("#com_stats"), [{
-        data: data_com, showLabels: true, labels: data_com, labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF" 
+        data: data_com, showLabels: true, labels: data_com, labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF"
       }
       ], {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
@@ -322,7 +322,7 @@ var App = function () {
                 opacity: 0.25
               }
               ]
-            } 
+            }
           },
           points: {
             show: true
@@ -354,7 +354,7 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*Bar charts widget*/
         var data3 = [
         [1, randValue()],
@@ -433,11 +433,11 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
-      
+
+
       var previousPoint = null;
       $("#site_statistics").bind("plothover", function (event, pos, item) {
-      
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -453,10 +453,10 @@ var App = function () {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
-      
+      });
+
       $("#site_statistics2").bind("plothover", function (event, pos, item) {
-      
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -472,7 +472,7 @@ var App = function () {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
+      });
     }
 
     /*Jquery Easy Pie Chart*/
@@ -518,7 +518,11 @@ var App = function () {
     });
   };
   /*END OF DASHBOARD*/
-  
+
+
+
+
+
   /*Nestable Lists*/
   var nestable = function(){
     $('.dd').nestable();
@@ -672,7 +676,7 @@ var App = function () {
         "background-color": "#000",
         opacity: 0.80
       }).appendTo("body").fadeIn(200);
-    } 
+    }
 
     function randValue() {
       return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
@@ -740,7 +744,7 @@ var App = function () {
 
       $('#site_statistics_loading').hide();
       $('#site_statistics_content').show();
-      
+
       var plot_statistics = $.plot($("#site_statistics"), [{
         data: pageviews,
         label: "Sales"
@@ -749,7 +753,7 @@ var App = function () {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
@@ -758,7 +762,7 @@ var App = function () {
                 opacity: 0.25
               }
               ]
-            } 
+            }
           },
           points: {
             show: true
@@ -786,7 +790,7 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       var plot_statistics2 = $.plot($("#site_statistics2"), [{
         data: pageviews,
         label: "Unique Visits"
@@ -806,7 +810,7 @@ var App = function () {
                 opacity: 1
               }
               ]
-            } 
+            }
           },
           shadowSize: 2
         },
@@ -831,7 +835,7 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*Pie Chart*/
       var data = [
       { label: "Google", data: 50},
@@ -842,7 +846,7 @@ var App = function () {
       { label: "Apple", data: 13},
       { label: "Amazon", data: 10},
       { label: "Facebook", data: 5}
-      ]; 
+      ];
 
       $.plot('#piec', data, {
         series: {
@@ -878,7 +882,7 @@ var App = function () {
           show: false
         }
       });
-      
+
       /*COM Chart*/
       var data_com2 = [
         [1, randValue()],
@@ -940,17 +944,17 @@ var App = function () {
                     "Eta",
                     "Theta"
                 ];
-          
+
       var plot_statistics = $.plot($("#chart3"), [{
-        data: data_com, showLabels: true, label: "New Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF" 
+        data: data_com, showLabels: true, label: "New Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF"
       },{
-        data: data_com2, showLabels: true, label: "Old Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF" 
+        data: data_com2, showLabels: true, label: "Old Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF"
       }
       ], {
         series: {
           lines: {
             show: true,
-            lineWidth: 1, 
+            lineWidth: 1,
             fill: true,
              fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.5}] }
           },
@@ -989,11 +993,11 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*LIVE DATA CHART*/
-      
-      var data = [],totalPoints = 200; 
-      
+
+      var data = [],totalPoints = 200;
+
       function getRandomData() {
         if (data.length > 0)
         data = data.slice(1);
@@ -1014,8 +1018,8 @@ var App = function () {
         res.push([i, data[i]])
         }
         return res;
-      } 
-      
+      }
+
       function update() {
         chart4.setData([getRandomData()]);
         // Since the axes don't change, we don't need to call plot.setupGrid()
@@ -1031,7 +1035,7 @@ var App = function () {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
@@ -1040,7 +1044,7 @@ var App = function () {
                 opacity: 0.25
               }
               ]
-            } 
+            }
           },
           points: {
             show: false
@@ -1068,14 +1072,14 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       update();
-      
+
       /*Tooltips*/
-      
+
       var previousPoint = null;
       $("#site_statistics").bind("plothover", function (event, pos, item) {
-      
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -1091,10 +1095,10 @@ var App = function () {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
-      
+      });
+
       $("#site_statistics2").bind("plothover", function (event, pos, item) {
-      
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -1110,10 +1114,10 @@ var App = function () {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
-      
+      });
+
       $("#chart3").bind("plothover", function (event, pos, item) {
-      
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -1129,7 +1133,7 @@ var App = function () {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
+      });
     }
 
     /*Jquery Easy Pie Chart*/

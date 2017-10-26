@@ -39,6 +39,7 @@ class PayController extends  Controller
             $res = $wineOrder->getorder($_POST['out_trade_no']);
             if($res['order_status']==$wineOrder::ORDER_STATE_NO){
                 $wineOrder->updateOrder($_POST['out_trade_no']);
+                actionLog('订单号：'.$_POST['out_trade_no'].',支付宝收款：'.$_POST['total_amount']);
             }
 
         }else{

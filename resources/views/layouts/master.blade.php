@@ -34,6 +34,29 @@
     <link href="{{asset('css/style.css')}}" rel="stylesheet" />
     <link href="{{asset('js/jquery.icheck/skins/square/blue.css')}}" rel="stylesheet" />
 
+    {{--kkk--}}
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{{asset('js/bootstrap.switch/bootstrap-switch.min.css')}}" />
+
+    <!-- Select2 -->
+    <link rel="stylesheet" type="text/css" href="{{asset('js/jquery.select2/select2.css')}}" />
+
+
+
+    <!-- DateRange -->
+    <link rel="stylesheet" type="text/css" href="{{asset('js/bootstrap.daterangepicker/daterangepicker-bs3.css')}}" />
+
+    <!-- Custom styles for this template -->
+
+
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <link rel="stylesheet" href="{{asset('css/pygments.css')}}">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
 </head>
 <body>
 
@@ -187,7 +210,8 @@
 
                         </li>
 
-                        <li><a href="{{url('admin/adminlist')}}"><i class="fa fa-users"></i><span>用户管理</span></a>
+                        <li><a href="{{url('admin/customerlist')}}"><i class="fa fa-users"></i><span>客户管理</span></a>
+                        <li><a href="{{url('admin/adminlist')}}"><i class="fa fa-user"></i><span>用户管理</span></a>
                             {{--<ul class="sub-menu">
                                 <li class="@yield('active')"><a href="{{url('admin/adminlist')}}">用户管理</a></li>
                                 <li class="@yield('active')"><a href="{{url('admin/adminrole')}}">分组管理</a></li>
@@ -195,9 +219,12 @@
                             </ul>--}}
                         </li>
 
-                        {{--<li><a href=""><i class="fa fa-users"></i><span>日志管理</span></a>
+                        <li><a href="{{url('/admin/charts')}}"><i class="fa fa-bar-chart-o"></i><span>销售统计</span></a>
 
-                        </li>--}}
+                        </li>
+                        <li><a href="{{url('/admin/loglist')}}"><i class="fa fa-file-text-o"></i><span>日志管理</span></a>
+
+                        </li>
 
                     </ul>
                 </div>
@@ -252,10 +279,21 @@ src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/jquery.niftymodals/js/jquery.modalEffects.js')}}"></script>
 
 
+
+<script src="{{asset('js/jquery.parsley/dist/parsley.js')}}" type="text/javascript"></script>
+<script type="text/javascript" src="{{asset('js/jquery.icheck/icheck.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/bootstrap.daterangepicker/moment.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/bootstrap.daterangepicker/daterangepicker.js')}}"></script>
+
+{{--<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>--}}
+<script src="{{asset('js/skycons/skycons.js')}}" type="text/javascript"></script>
+{{--<script src="{{asset('js/intro.js/intro.js')}}" type="text/javascript"></script>--}}
+
 <script type="text/javascript">
     $(document).ready(function(){
         //initialize the javascript
         App.init();
+
     });
 </script>
 
@@ -276,7 +314,7 @@ src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
         $("#md-scale").addClass('md-show');
         setTimeout(function () {
             $("#md-scale").removeClass('md-show');
-        }, 1800);
+        }, 2000);
         return false;
     }
     function alertsuccess(msg){//成功弹窗
@@ -287,7 +325,7 @@ src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
         $("#md-scale").addClass('md-show');
         setTimeout(function () {
             $("#md-scale").removeClass('md-show');
-        }, 1800)
+        }, 2000)
     }
 </script>
 @yield('javascript')

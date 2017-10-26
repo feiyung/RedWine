@@ -27,7 +27,7 @@ class RedWine extends Model
 
             $ad_id = $this->insertGetId($data);
             if($ad_id){
-                return true;
+                return $ad_id;
             }else{
                 return false;
             }

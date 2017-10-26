@@ -37,7 +37,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" role="form" data-parsley-validate="" novalidate=""
+                                    <form class="form-horizontal" role="form"  novalidate=""
                                           method="post" action="" id="addForm">
                                         {{ csrf_field() }}
                                         <div class="form-group">
@@ -47,7 +47,7 @@
                                                        class="form-control" id="inputEmail3"
                                                        placeholder="长度1~10" name="p_name"
                                                        data-parsley-id="5250" maxlength="10" minlength="3">
-                                                <ul class="parsley-errors-list" id="parsley-id-5250"></ul>
+
                                             </div>
                                         </div>
 

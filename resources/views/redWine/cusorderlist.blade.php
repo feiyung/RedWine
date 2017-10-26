@@ -1,16 +1,16 @@
 @extends('layouts.master')
 @section('title')
-    订单列表
+    {{$info->cus_name}}的订单列表
 @endsection
 
 @section('content')
     <div class="container-fluid">
         <div class="page-head">
-            <h2>订单列表</h2>
+            <h2>{{$info->cus_name}}的订单列表</h2>
             <ol class="breadcrumb">
                 <li><a href="#">首页</a></li>
-                <li><a href="#">订单管理</a></li>
-                <li class="active">订单列表</li>
+                <li><a href="#">客户管理</a></li>
+                <li class="active">{{$info->cus_name}}的订单列表</li>
             </ol>
         </div>
         <div class="cl-mcont" style="padding: 0">
@@ -39,26 +39,26 @@
                                 </div>
                                 <div class="modal-body">
 
-                                        <form class="form-horizontal group-border-dashed" action="#" style="border-radius: 0px;">
+                                    <form class="form-horizontal group-border-dashed" action="#" style="border-radius: 0px;">
 
 
-                                            <div class="form-group">
-                                                {{--<label class="col-sm-3 control-label">Inline Radio</label>--}}
-                                                <div class="col-sm-12">
+                                        <div class="form-group">
+                                            {{--<label class="col-sm-3 control-label">Inline Radio</label>--}}
+                                            <div class="col-sm-12">
 
-                                                    <div class="radio">
-                                                        <label> <input type="radio" checked name="payway" class="icheck" value="1"> 支付宝</label>
-                                                    </div>
-                                                    <div class="radio">
-                                                        <label> <input type="radio" name="payway" class="icheck" value="2"> 现金<input type="text" placeholder="输入金额" maxlength="10" name="pay_price"></label>
-                                                    </div>
-                                                    <div class="radio">
-                                                        <label> <input type="radio" name="payway" class="icheck" value="3"> 赊账</label>
-                                                    </div>
+                                                <div class="radio">
+                                                    <label> <input type="radio" checked name="payway" class="icheck" value="1"> 支付宝</label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label> <input type="radio" name="payway" class="icheck" value="2"> 现金<input type="text" placeholder="输入金额" maxlength="10" name="pay_price"></label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label> <input type="radio" name="payway" class="icheck" value="3"> 赊账</label>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                        </form>
+                                    </form>
 
 
                                 </div>
@@ -68,6 +68,44 @@
                                     </button>
                                     <button type="button" class="btn btn-primary btn-flat md-close"
                                             data-dismiss="modal" id="submit">确定
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md-modal colored-header  primary md-effect-3" id="paydebt">
+                            <div class="md-content">
+                                <div class="modal-header">
+                                    <h3>支付</h3>
+                                    <button type="button" class="close md-close" data-dismiss="modal"
+                                            aria-hidden="true">×
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form class="form-horizontal group-border-dashed" action="#" style="border-radius: 0px;">
+
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">支付金额</label>
+                                            <div class="col-sm-7">
+
+
+                                                    <input type="email" required="" class="form-control" id="inputEmail3" placeholder="未付金额{{number_format($money['debt'])}}" name="repaydebt" data-parsley-id="5250" maxlength="10" >
+
+
+                                            </div>
+                                        </div>
+
+                                    </form>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-flat md-close"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-flat md-close"
+                                            data-dismiss="modal" id="submit_debt" data-id="{{$id}}">确定
                                     </button>
                                 </div>
                             </div>
@@ -100,6 +138,49 @@
                             <table class="table no-border hover">
                                 <thead class="no-border">
                                 <tr>
+                                    <th>所有订单数</th>
+                                    <th>已付款订单数</th>
+                                    <th class="">未付款订单数</th>
+                                    <th>消费总金额</th>
+                                    <th>已付金额</th>
+                                    <th>未付金额</th>
+                                    <th>退货退款数</th>
+                                    <th class="text-right">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody class="no-border-y">
+
+                                <tr>
+                                    <td style="vertical-align: middle">{{$countall}}</td>
+                                    <td style="vertical-align: middle">{{$countyes}}</td>
+                                    <td style="vertical-align: middle">{{$countno}}</td>
+                                    <td style="vertical-align: middle">&yen;{{number_format($money['all'])}}</td>
+                                    <td style="vertical-align: middle">&yen;{{number_format($money['all']-$money['debt'])}}</td>
+                                    <td style="vertical-align: middle;color:red">&yen;{{number_format($money['debt'])}}</td>
+                                    <td style="vertical-align: middle;">
+                                        {{$countre}}
+                                    </td>
+                                    <td style="vertical-align: middle" class="text-right">
+
+                                        @if($money['debt'])
+                                            <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="paydebt" data-id="">付款</button>
+                                            @else
+                                            <button type="button" class="btn btn-info btn-rad disabled btn-sm">无操作</button>
+                                        @endif
+
+
+                                    </td>
+                                </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="content">
+                            <table class="table no-border hover">
+                                <thead class="no-border">
+                                <tr>
                                     <th>订单号</th>
                                     <th>红酒名称</th>
                                     <th class="">单价(RMB)</th>
@@ -112,14 +193,14 @@
                                 </tr>
                                 </thead>
                                 <tbody class="no-border-y">
-                                @foreach($alllist as $n)
+                                @foreach($list as $n)
                                     <tr>
                                         <td style="vertical-align: middle">{{$n->order_num}}</td>
                                         <td style="vertical-align: middle">{{$n->wine_name}}</td>
                                         <td style="vertical-align: middle">&yen;{{number_format($n->price)}}</td>
                                         <td style="vertical-align: middle">{{$n->wine_num}}</td>
                                         <td style="vertical-align: middle">&yen;{{number_format($n->price * $n->wine_num)}}</td>
-                                        <td style="vertical-align: middle;color:red">&yen;{{number_format($n->debt_price )}}</td>
+                                        <td style="vertical-align: middle;color:red">&yen;{{number_format($n->debt_price)}}</td>
                                         <td style="vertical-align: middle">{{$n->buy_name}}</td>
                                         <td style="vertical-align: middle;color:red;">
                                             @if($n->order_status==0)
@@ -141,9 +222,9 @@
                                             {{--<button type="button" class="editw btn btn-info btn-rad md-trigger"
                                                     data-modal="edit" data-id="{{$n->id}}">编辑</button>--}}
                                             @if($n->order_status==0)
-                                            <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="payway" data-id="{{$n->id}}">付款方式</button>
-                                {{--            @elseif($n->order_status==0 && $n->pay_way==3)
-                                                <button type="button" class="btn btn-danger btn-rad btn-sm">确认收款</button>--}}
+                                                <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="payway" data-id="{{$n->id}}">付款方式</button>
+                                                {{--            @elseif($n->order_status==0 && $n->pay_way==3)
+                                                                <button type="button" class="btn btn-danger btn-rad btn-sm">确认收款</button>--}}
                                             @elseif($n->order_status==1)
                                                 <button type="button" class="btn btn-warning btn-rad btn-sm reject" data-id="{{$n->id}}">退货退款</button>
                                             @endif
@@ -157,7 +238,60 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row"><div class="pull-right" style="padding-right: 20px;">{{$alllist->links()}}</div></div>
+                        <div class="row"><div class="pull-right" style="padding-right: 20px;">{{$list->links()}}</div></div>
+                    </div>
+                    <div class="block-flat">
+                        <div class="header">
+                            {{--<h3>Full-Borders Table</h3>--}}
+
+                            {{--<button class="btn btn-success btn-flat md-trigger btn-rad btn-lg"
+                                    data-modal="colored-success">添加红酒
+                            </button>--}}
+
+                        </div>
+
+                        <div class="content">
+                            <table class="table no-border hover">
+                                <thead class="no-border">
+                                <tr>
+                                    <th>所有订单数</th>
+                                    <th>已付款订单数</th>
+                                    <th class="">未付款订单数</th>
+                                    <th>消费总金额</th>
+                                    <th>已付金额</th>
+                                    <th>未付金额</th>
+                                    <th>退货退款数</th>
+                                    <th class="text-right">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody class="no-border-y">
+
+                                    <tr>
+                                        <td style="vertical-align: middle">{{$countall}}</td>
+                                        <td style="vertical-align: middle">{{$countyes}}</td>
+                                        <td style="vertical-align: middle">{{$countno}}</td>
+                                        <td style="vertical-align: middle">&yen;{{number_format($money['all'])}}</td>
+                                        <td style="vertical-align: middle">&yen;{{number_format($money['all']-$money['debt'])}}</td>
+                                        <td style="vertical-align: middle;color:red">&yen;{{number_format($money['debt'])}}</td>
+                                        <td style="vertical-align: middle;">
+                                            {{$countre}}
+                                        </td>
+                                        <td style="vertical-align: middle" class="text-right">
+
+                                            @if($money['debt'])
+                                                <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="paydebt" data-id="">付款</button>
+                                                @endif
+
+
+                                        </td>
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
 
 
@@ -189,16 +323,16 @@
     <script>
 
         /*付款方式*/
-        $(".pay_way").click(function(){
+        /*$(".pay_way").click(function(){
             var id = $(this).attr('data-id');
             $("#submit").attr('data-id',id);
-        })
-        /*$(".radio-inline").click(function(){
-            var payway = $(this).children().children('input').val();
-            if(payway==2){
-                price = prompt("输入付款金额","");
-            }
         })*/
+        /*$(".radio-inline").click(function(){
+         var payway = $(this).children().children('input').val();
+         if(payway==2){
+         price = prompt("输入付款金额","");
+         }
+         })*/
 
         $('#submit').click(function () {
             var payway = $("input[name='payway']:checked").val();
@@ -241,22 +375,21 @@
         $(".reject").click(function(){
             var id = $(this).attr('data-id');
             $.post('{{url("/admin/reject")}}',{id:id,_token:"{{csrf_token()}}"},function(data){
-                    if(data){
-                        alertsuccess(data.msg);
-                        setTimeout(function () {
-                            location.reload(true);
-                        }, 1000);
-                    }
+                if(data.flag){
+                    alertsuccess(data.msg);
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 1000);
+                }
             },'json')
         })
-/*订单详情*/
-   $(".detail").click(function(){
-       var id = $(this).attr('data-id');
-       var str = '';
-
-       $("#detail_info").empty();
-       $.post("{{url('/admin/orderdetail')}}",{id:id,_token:"{{csrf_token()}}"},function(data){
-            str = `<tr>
+        /*订单详情*/
+        $(".detail").click(function(){
+            var id = $(this).attr('data-id');
+            var str = '';
+            $("#detail_info").empty();
+            $.post("{{url('/admin/orderdetail')}}",{id:id,_token:"{{csrf_token()}}"},function(data){
+                str = `<tr>
                         <td style="width:30%;" class="text-right">订单编号：</td>
                         <td class="text-center">`+data.data.order_num+`</td>
 
@@ -322,11 +455,34 @@
                         <td class="text-center">`+data.data.create_time+`</td>
 
                     </tr>`;
-           $("#detail_info").append(str);
+                $("#detail_info").append(str);
 
 
-       },'json')
-   })
+            },'json')
+        })
+
+
+        /*抵账*/
+        $("#submit_debt").click(function(){
+            var repaydebt = $("input[name='repaydebt']").val();
+            var id = $(this).attr('data-id');
+            var reg_price = /^[1-9]\d*\.?\d{0,2}$/;
+            if(!reg_price.test(repaydebt)){
+                alertfail('请输入付款金额！');
+                return false;
+            }
+
+            $.post('{{url("/admin/repay")}}',{id:id,repaydebt:repaydebt,_token:"{{csrf_token()}}"},function(data){
+                if(data.flag==1){
+                    alertsuccess('成功支付'+data.data.debt+'元');
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 2000);
+                }else if(data.flag==0){
+                    alertfail(data.msg);
+                }
+            },'json')
+        })
 
     </script>
 @endsection

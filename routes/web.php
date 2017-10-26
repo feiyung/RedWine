@@ -62,12 +62,36 @@ Route::group(['middleware'=>'admin.login'],function(){
     Route::get('/admin/orderlist','RedWineController@orderList');
     /*创建订单*/
     Route::post('/admin/createorder','RedWineController@createOrder');
-    /*去支付*/
+    /*支付方式*/
+    Route::post('/admin/payway','RedWineController@payWay');
+    /*支付宝支付*/
     Route::get('/admin/pay/{id}','RedWineController@pay')->where('id', '[0-9]+');
     /*订单详情*/
     Route::post('/admin/orderdetail','RedWineController@detail');
+    /*客户列表*/
+    Route::get('/admin/customerlist','RedWineController@customerList');
+    /*添加客户*/
+    Route::post('/admin/addcustomer','RedWineController@insertCustomer');
+    /*获取单条客户信息*/
+    Route::post('/admin/editcustomer','RedWineController@editCustomer');
+    /*获取客户所有订单*/
+    Route::get('/admin/cusorderList/{id}','RedWineController@customerOrderList')->where('id', '[0-9]+');
+    /*保存*/
+    Route::post('/admin/saveedit','RedWineController@saveEdit');
+    /*日志列表*/
+    Route::get('/admin/loglist','RedWineController@getActionLog');
+    /*退货退款*/
+    Route::post('/admin/reject','RedWineController@reject');
+    /*销量统计*/
+    Route::get('/admin/charts','RedWineController@Charts');
+    Route::post('/admin/count','RedWineController@Counts');
+    /*销售额*/
+    Route::post('/admin/salemoney','RedWineController@salemoney');
+    /*抵账*/
+    Route::post('/admin/repay','RedWineController@repay');
+
 });
 /*支付宝回调*/
-Route::match(['get','post'],'/admin/notify','PayController@notify');
+Route::match(['get','post'],'/admin/notify','PayController@notify');//回调时session将无效
 
 

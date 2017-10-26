@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-head">
             <h2>红酒列表</h2>
             <ol class="breadcrumb">
@@ -37,7 +37,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" role="form" data-parsley-validate="" novalidate=""
+                                    <form class="form-horizontal" role="form"  novalidate=""
                                           method="post" action="" id="addForm">
                                         {{ csrf_field() }}
                                         <div class="form-group">
@@ -47,7 +47,7 @@
                                                        class="form-control" id="inputEmail3"
                                                        placeholder="长度不超过30" name="wine_name"
                                                        data-parsley-id="5250" maxlength="30" minlength="3">
-                                                <ul class="parsley-errors-list" id="parsley-id-5250"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -56,7 +56,7 @@
                                                 <input type="text" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度0~10" name="price"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
-                                                <ul class="parsley-errors-list" id="parsley-id-2907"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -94,7 +94,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" role="form" data-parsley-validate="" novalidate=""
+                                    <form class="form-horizontal" role="form"  novalidate=""
                                           method="post" action="" id="addForm">
                                         {{ csrf_field() }}
                                         <div class="form-group">
@@ -104,7 +104,7 @@
                                                        class="form-control" id="inputEmail3"
                                                        placeholder="长度不超过30" name="wine_name_e"
                                                        data-parsley-id="5250" maxlength="30" minlength="3">
-                                                <ul class="parsley-errors-list" id="parsley-id-5250"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -113,7 +113,7 @@
                                                 <input type="text" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度0~10" name="price_e"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
-                                                <ul class="parsley-errors-list" id="parsley-id-2907"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -151,7 +151,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" role="form" data-parsley-validate="" novalidate=""
+                                    <form class="form-horizontal" role="form"  novalidate=""
                                           method="post" action="" id="addForm">
                                         {{ csrf_field() }}
                                         <div class="form-group">
@@ -161,7 +161,6 @@
                                                        class="form-control" id="inputEmail3"
                                                        placeholder="长度不超过30" name="wine_name_o"
                                                        data-parsley-id="5250" maxlength="30" minlength="3">
-                                                <ul class="parsley-errors-list" id="parsley-id-5250"></ul>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -170,33 +169,73 @@
                                                 <input type="text" readonly class="form-control"
                                                        id="inputPassword3" placeholder="长度0~10" name="price_o"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
-                                                <ul class="parsley-errors-list" id="parsley-id-2907"></ul>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">订单数量</label>
+                                            <label class="col-sm-3 control-label">红酒数量(瓶)</label>
                                             <div class="col-sm-7">
                                                 <input type="text" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度不超过10位" name="wine_num"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">买家姓名</label>
+                                        {{--<div class="form-group">
+                                            <label class="col-sm-3 control-label">客户姓名</label>
                                             <div class="col-sm-7">
                                                 <input type="text" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度不超过10位" name="buy_name"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
                                             </div>
-                                        </div>
+                                        </div>--}}
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">买家电话</label>
-                                            <div class="col-sm-7">
-                                                <input type="text" required="" class="form-control"
+                                            <label class="col-sm-3 control-label">选择客户</label>
+                                            <input type="hidden" required="" class="form-control"
+                                                   id="inputPassword3" placeholder="长度不超过10位" name="buy_name"
+                                                   data-parsley-id="2907" maxlength="10" minlength="0">
+
+                                                <input type="hidden" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度不超过11位" name="buy_tel"
                                                        data-parsley-id="2907" maxlength="11" minlength="0">
+
+                                            <div class="col-sm-7">
+                                                <select class="form-control" name="customer">
+                                                    <option value=""></option>
+                                                    @foreach($customerlist as $c)
+                                                        <option value="{{$c->id}}" data-tel="{{$c->cus_tel}}" data-name="{{$c->cus_name}}">{{$c->cus_name}}</option>
+                                                    @endforeach
+
+                                                </select>
                                             </div>
+                                            <input type="hidden" value="" name="cus_id">
                                         </div>
+
+
+                                        {{--<div class="form-group">
+                                            <label class="col-sm-3 control-label">已有客户</label>
+                                            <div class="col-sm-7">
+                                                <div class="panel-group accordion" id="accordion">
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" style="padding: 7px 16px">
+                                                                    <i class="fa fa-angle-right"></i> 选择
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseThree" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+                                                                <div class="form-group">
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>--}}
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -216,9 +255,9 @@
                                 <tr>
                                     <th>编号</th>
                                     <th>红酒名称</th>
-                                    <th class="">单价</th>
-                                    <th>销量</th>
-                                    <th>库存</th>
+                                    <th class="">单价(RMB)</th>
+                                    <th>销量(瓶)</th>
+                                    <th>库存(瓶)</th>
                                     <th>描述</th>
                                     <th class="text-right">操作</th>
                                 </tr>
@@ -228,7 +267,7 @@
                                     <tr>
                                         <td style="vertical-align: middle">{{$n->id}}</td>
                                         <td style="vertical-align: middle">{{$n->wine_name}}</td>
-                                        <td style="vertical-align: middle">{{$n->price}}</td>
+                                        <td style="vertical-align: middle">&yen;{{number_format($n->price)}}</td>
                                         <td style="vertical-align: middle">{{$n->sales_num}}</td>
                                         <td style="vertical-align: middle">{{$n->sku_num}}</td>
                                         <td style="vertical-align: middle">{{$n->description}}</td>
@@ -392,6 +431,16 @@
                 }
             },'json')
         });
+
+//        function checkcus(t){alert();
+//            $("input[name='buy_name']").val($(t).attr('data-name'));
+//            $("input[name='buy_tel']").val($(t).attr('data-tel'));
+//        }
+        $("select[name='customer']").change(function(){
+            $("input[name='buy_name']").val($("select[name='customer'] option:selected").attr('data-name'));
+            $("input[name='buy_tel']").val($("select[name='customer'] option:selected").attr('data-tel'));
+            $("input[name='cus_id']").val($(this).val())
+        })
         $('#submit_o').click(function () {
             var wine_name = $("input[name='wine_name_o']").val();
             var price = $("input[name='price_o']").val();
@@ -399,6 +448,8 @@
             var buy_name = $("input[name='buy_name']").val();
             var buy_tel = $("input[name='buy_tel']").val();
             var id = $(this).attr('data-id');
+            var cus_id = $("input[name='cus_id']").val();
+            $("input[name='cus_id']").val('');
             if(!wine_name.length){
                 alertfail('红酒名称不能为空！');
                 return false;
@@ -416,7 +467,7 @@
             }
 
             if(!buy_name.length){
-                alertfail('买家姓名不能为空！');
+                alertfail('客户姓名不能为空！');
                 return false;
             }
             re = /^1[34578][0-9]{9}$/
@@ -435,6 +486,7 @@
                 buy_name:buy_name,
                 buy_tel:buy_tel,
                 id:id,
+                cus_id:cus_id,
                 _token: "{{csrf_token()}}"
             }, function (data) {
                 if (data.flag) {
