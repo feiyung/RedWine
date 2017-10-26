@@ -281,10 +281,10 @@
     <script>
 
         /*付款方式*/
-        /*$(".pay_way").click(function(){
+        $(".pay_way").click(function(){
             var id = $(this).attr('data-id');
             $("#submit").attr('data-id',id);
-        })*/
+        })
         /*$(".radio-inline").click(function(){
          var payway = $(this).children().children('input').val();
          if(payway==2){
