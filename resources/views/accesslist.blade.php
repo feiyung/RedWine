@@ -6,7 +6,7 @@
 @section('content')
     <div class="container">
         <div class="page-head">
-            <h2>用户列表</h2>
+            <h2>权限列表</h2>
             <ol class="breadcrumb">
                 <li><a href="#">首页</a></li>
                 <li><a href="#">权限管理</a></li>
@@ -23,12 +23,12 @@
                         <div class="header">
                             {{--<h3>Full-Borders Table</h3>--}}
 
-                            <button class="btn btn-success btn-flat md-trigger btn-rad btn-lg"
+                            <button class="btn btn-primary btn-flat md-trigger btn-rad "
                                     data-modal="colored-success">添加新权限
                             </button>
 
                         </div>
-                        <div class="md-modal colored-header success md-effect-3" id="colored-success">
+                        <div class="md-modal colored-header primary md-effect-3" id="colored-success">
                             <div class="md-content">
                                 <div class="modal-header">
                                     <h3>权限填写</h3>
@@ -84,7 +84,7 @@
                                     <button type="button" class="btn btn-default btn-flat md-close"
                                             data-dismiss="modal">取消
                                     </button>
-                                    <button type="button" class="btn btn-success btn-flat md-close"
+                                    <button type="button" class="btn btn-primary btn-flat md-close"
                                             data-dismiss="modal" id="submit">提交
                                     </button>
                                 </div>
@@ -112,12 +112,12 @@
                                         <td style="vertical-align: middle" class="text-right">
                                             @if($n->status)
 
-                                                <button type="button" class="disable btn btn-warning btn-rad" data-id="{{$n->id}}" onclick="disable(this)">禁用</button>
+                                                <button type="button" class="disable btn btn-warning btn-rad btn-sm" data-id="{{$n->id}}" onclick="disable(this)">禁用</button>
                                             @else
-                                                <button type="button" class="enable btn btn-success btn-rad" data-id="{{$n->id}}" onclick="enable(this)">启用</button>
+                                                <button type="button" class="enable btn btn-success btn-rad btn-sm" data-id="{{$n->id}}" onclick="enable(this)">启用</button>
                                             @endif
                                                 <a href="{{url("admin/editAccess/$n->id")}}">
-                                            <button type="button" class="btn btn-info btn-rad"
+                                            <button type="button" class="btn btn-info btn-rad btn-sm"
                                                      >编辑
                                             </button></a>
                                         </td>
@@ -174,6 +174,9 @@
             }, function (data) {
                 if (data.flag) {
                     alertsuccess(data.msg);
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 1500);
                 } else {
                     alertfail(data.msg);
                 }
@@ -184,12 +187,13 @@ function disable(t) {
 
         var id = $(t).attr('data-id');
         $.post('{{url('admin/disable')}}',{id:id,_token: "{{csrf_token()}}"},function(data){
-            if(!data.flag){
-                return false;
+            if(data.flag){
+                $(t).parent().prepend('<button type="enable button" class="btn btn-success btn-rad btn-sm"data-id="'+id+'" onclick="enable(this)">启用</button>');
+                $(t).remove();
+            }else{
+                alertfail(data.msg);
             }
         },'json')
-        $(t).parent().prepend('<button type="enable button" class="btn btn-success btn-rad"data-id="'+id+'" onclick="enable(this)">启用</button>');
-        $(t).remove();
 
 
 
@@ -199,12 +203,14 @@ function enable(t){
 
         var id = $(t).attr('data-id');
         $.post('{{url('admin/enable')}}',{id:id,_token: "{{csrf_token()}}"},function(data){
-            if(!data.flag){
-                return false;
+            if(data.flag){
+                $(t).parent().prepend('<button type="button" class="disable btn btn-warning btn-rad btn-sm" data-id="'+id+'" onclick="disable(this)">禁用</button>');
+                $(t).remove();
+            }else{
+                alertfail(data.msg);
             }
         },'json')
-        $(t).parent().prepend('<button type="button" class="disable btn btn-warning btn-rad" data-id="'+id+'" onclick="disable(this)">禁用</button>');
-        $(t).remove();
+
 
 
 }

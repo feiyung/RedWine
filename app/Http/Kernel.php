@@ -3,6 +3,7 @@
 namespace App\Http;
 
 
+use App\Http\Middleware\CheckAccess;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -54,5 +55,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin.login' => \App\Http\Middleware\AdminLogin::class,
+        'access' => \App\Http\Middleware\CheckAccess::class,
     ];
 }

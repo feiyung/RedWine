@@ -21,7 +21,8 @@ class AdminController extends Controller
     /*
      * 添加用户
      */
-    public function Add_user(){
+    public function Add_user()
+    {
 
         $admin = new Admin();
         $input = Input::all();
@@ -29,61 +30,68 @@ class AdminController extends Controller
         $data['ad_password'] = md5($input['pwd']);
         $data['is_super'] = isset($input['issuper']) ? $input['issuper'] : 0;
         $data['add_time'] = time();
+        $data['update_time'] = $data['add_time'];
         $data['is_normal'] = $admin::STATE_NORMAL;
-        if($input['pwd']!=$input['repwd']){
+        if ($input['pwd'] != $input['repwd']) {
             falseAjax('两次密码不一致，请重新输入！');
         }
         $result = $admin->AddAdmin($data);
-        if($result){
+        if ($result) {
             trueAjax('添加用户成功！');
-        }else{
+        } else {
             falseAjax('添加用户失败');
         }
-
 
 
     }
 
     /*获取用户信息*/
-    public function getAdminInfo(){
+    public function getAdminInfo()
+    {
         $admin = new Admin();
         $input = Input::all();
-        $result = $admin->getInfo(['ad_id'=>$input['id']]);
+        $result = $admin->getInfo(['ad_id' => $input['id']]);
         trueAjax('', $result);
     }
 
     /*编辑用户*/
-    public function editAdmin(){
+    public function editAdmin()
+    {
         $admin = new Admin();
         $input = Input::all();
         $data['ad_name'] = $input['uname'];
         $data['ad_password'] = md5($input['pwd']);
         $data['is_super'] = isset($input['issuper']) ? $input['issuper'] : 0;
-        if($input['pwd']!=$input['repwd']){
+        $data['update_time'] = time();
+        if ($input['pwd'] != $input['repwd']) {
             falseAjax('两次密码不一致，请重新输入！');
         }
-        $result = $admin->updateInfo($input['id'],$data);
-        if($result){
+        $result = $admin->updateInfo($input['id'], $data);
+        if ($result) {
             trueAjax('更新用户成功！');
-        }else{
+        } else {
             falseAjax('更新用户失败');
         }
 
     }
+
     /*登录页面*/
-    public function login_page(){
+    public function login_page()
+    {
         return view('login');
     }
+
     /*
      * 用户登录
      */
-    public function login(){
+    public function login()
+    {
         $admin = new Admin();
         $input = Input::all();
-        if(!strlen($input['name'])){
+        if (!strlen($input['name'])) {
             falseAjax('用户名不能为空');
         }
-        if(!strlen($input['pwd'])){
+        if (!strlen($input['pwd'])) {
             falseAjax('密码不能为空');
         }
         $condition['ad_name'] = $input['name'];
@@ -96,14 +104,15 @@ class AdminController extends Controller
         if (!$info['is_normal']) {
             falseAjax('该用户处于不可登录状态,详情请联系管理员');
         }
-        session(['info'=>json_encode($info),'ad_name'=>$info->ad_name]);
+        session(['info' => json_encode($info), 'ad_name' => $info->ad_name]);
         Session::save();
         $admin->loginTime($info->ad_id);
         trueAjax('');
     }
 
     /*用户退出*/
-    public function loginout(){
+    public function loginout()
+    {
         session(['info' => null]);
         Session::save();
         return redirect('/');
@@ -112,52 +121,91 @@ class AdminController extends Controller
     /*
      * 用户列表
      */
-    public function adminList(){
+    public function adminList()
+    {
         $admin = new Admin();
         $list = $admin->getAdminList();
-        $info = json_decode(session('info'),true);
-        $super =  $info['is_super'];
+        $info = json_decode(session('info'), true);
+        $super = $info['is_super'];
         //dd($list);
         //dd(empty($list->toArray()));
-        return view('userlist',compact('list','super'));
+        return view('userlist', compact('list', 'super'));
     }
 
     /*用户禁用*/
-    public  function disableAdmin(){
+    public function disableAdmin()
+    {
         $admin = new Admin();
         $input = Input::all();
         $result = $admin->disabled($input['id']);
-        if($result){
+        if ($result) {
             trueAjax('');
-        }else{
+        } else {
             falseAjax('');
         }
     }
+
     /*用户启用*/
-    public  function enableAdmin(){
+    public function enableAdmin()
+    {
         $admin = new Admin();
         $input = Input::all();
         $result = $admin->enabled($input['id']);
-        if($result){
+        if ($result) {
             trueAjax('');
-        }else{
+        } else {
             falseAjax('');
         }
+    }
+
+    /*分配权限*/
+    public function setAccess($id)
+    {
+        $adminaccess = new AdminAccess();
+        $admin = new Admin();
+        $list = $adminaccess->getallAccess();
+        $info = $admin ->getInfo(['ad_id'=>$id]);
+        $parent_id = json_decode($info['parent_access'],true)?json_decode($info['parent_access'],true):[];
+        $son_id = json_decode($info['son_access'],true)?json_decode($info['son_access'],true):[];
+
+        //dd($list);
+        return view('setaccess', compact('list', 'id','parent_id','son_id'));
+    }
+
+    /*保存权限*/
+    public function saveAccess()
+    {
+        $admin = new Admin();
+        $input = Input::all();
+        $data = [
+            'son_access' => json_encode($input['son']),
+            'parent_access' => json_encode($input['parent']),
+            'update_time' => time()
+        ];
+        $res = $admin->saveAccess($input['id'],$data);
+        if($res){
+            trueAjax('更新成功！');
+        }else{
+            falseAjax('更新失败！');
+        }
+
     }
 
     /*
  * 分组列表
  */
-    public function roleList(){
+    public function roleList()
+    {
         $adminRole = new AdminRole();
         $list = $adminRole->getRoleList();
         //dd($list);
-        return view('adminrole',compact('list'));
+        return view('adminrole', compact('list'));
     }
 
     /*添加分组*/
 
-    public function addroles(){
+    public function addroles()
+    {
         $adminRole = new AdminRole();
         $input = Input::all();
         $data['role_name'] = $input['role_name'];
@@ -165,32 +213,35 @@ class AdminController extends Controller
         $data['update_time'] = $data['create_time'];
         $data['status'] = $adminRole::STATE_NORMAL;
         $result = $adminRole->AddRole($data);
-        if($result){
+        if ($result) {
             trueAjax('添加用户成功！');
-        }else{
+        } else {
             falseAjax('添加用户失败');
         }
     }
 
     /*分组禁用*/
-    public  function disableRole(){
+    public function disableRole()
+    {
         $adminRole = new AdminRole();
         $input = Input::all();
         $result = $adminRole->disabledRole($input['id']);
-        if($result){
+        if ($result) {
             trueAjax('');
-        }else{
+        } else {
             falseAjax('');
         }
     }
+
     /*分组启用*/
-    public  function enableRole(){
+    public function enableRole()
+    {
         $adminRole = new AdminRole();
         $input = Input::all();
         $result = $adminRole->enabledRole($input['id']);
-        if($result){
+        if ($result) {
             trueAjax('');
-        }else{
+        } else {
             falseAjax('');
         }
     }
@@ -200,24 +251,27 @@ class AdminController extends Controller
      * 给分组分配权限
      */
 
-    public function allotAccess(){
+    public function allotAccess()
+    {
 
     }
 
     /*
      * 权限列表
      */
-    public function accessList(){
+    public function accessList()
+    {
         $adminAccess = new AdminAccess();
         $toplist = $adminAccess->getAccesslist();
         $alllist = $adminAccess->getAlllist();
-        return view('accesslist',compact('toplist','alllist'));
+        return view('accesslist', compact('toplist', 'alllist'));
     }
 
 
     /*添加权限*/
 
-    public function addAccess(){
+    public function addAccess()
+    {
         $adminAccess = new AdminAccess();
         $input = Input::all();
         $data['p_name'] = $input['p_name'];
@@ -227,55 +281,60 @@ class AdminController extends Controller
         $data['update_time'] = $data['create_time'];
         $data['status'] = $adminAccess::STATE_NORMAL;
         $result = $adminAccess->AddAccess($data);
-        if($result){
+        if ($result) {
             trueAjax('添加用户成功！');
-        }else{
+        } else {
             falseAjax('添加用户失败');
         }
     }
 
     /*编辑权限*/
 
-    public function editAccess(Request $request){
+    public function editAccess(Request $request)
+    {
         $adminAccess = new AdminAccess();
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
             $input = Input::all();
             $data['p_name'] = $input['p_name'];
             $data['url'] = $input['url'];
             $data['pid'] = $input['pid'];
             $data['update_time'] = time();
-            $result = $adminAccess->updateAcsess($input['id'],$data);
-            if($result){
+            $result = $adminAccess->updateAcsess($input['id'], $data);
+            if ($result) {
                 trueAjax('修改成功！');
-            }else{
+            } else {
                 falseAjax('修改失败！');
             }
-        }else{
-            $getone = $adminAccess->getOne($request->id);
+        } else {
+            $getone = $adminAccess->getOne(['id'=>$request->id]);
             $toplist = $adminAccess->getAccesslist();
-            return view('editaccess',compact('getone','toplist'));
+            return view('editaccess', compact('getone', 'toplist'));
         }
 
     }
+
     /*权限禁用*/
-    public  function disable(){
+    public function disable()
+    {
         $adminAccess = new AdminAccess();
         $input = Input::all();
         $result = $adminAccess->disabled($input['id']);
-        if($result){
+        if ($result) {
             trueAjax('');
-        }else{
+        } else {
             falseAjax('');
         }
     }
+
     /*权限启用*/
-    public  function enable(){
+    public function enable()
+    {
         $adminAccess = new AdminAccess();
         $input = Input::all();
         $result = $adminAccess->enabled($input['id']);
-        if($result){
+        if ($result) {
             trueAjax('');
-        }else{
+        } else {
             falseAjax('');
         }
     }

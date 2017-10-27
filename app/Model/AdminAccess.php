@@ -42,9 +42,18 @@ class AdminAccess extends Model
         $result = $this->orderBy('id','asc')->get();
         return $result;
     }
+    /*获取所有权限排列*/
+    public function getallAccess(){
+        $top = $this->getAccesslist();
+        foreach($top as &$v){
+            $v->sonlist = $this->where(['pid'=>$v->id])->get(['id','p_name']);
+        }
+        return $top;
+    }
+
     /*获取单条权限*/
     public function getOne($id){
-        $result = $this->where(['id'=>$id])->first();
+        $result = $this->where($id)->first();
         return $result;
     }
     /*更新权限*/

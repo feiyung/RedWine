@@ -31,7 +31,7 @@ class Admin extends Model
     }
 
     public function getAdminList(){
-        $data = $this->get(['ad_id','ad_name','login_time','login_num','group_id','is_normal']);
+        $data = $this->get(['ad_id','ad_name','login_time','login_num','group_id','is_normal','is_super']);
 
         foreach ($data as $v){
             if($v->group_id==0){
@@ -68,6 +68,11 @@ class Admin extends Model
     /*更新用户信息*/
     public function updateInfo($id,$data){
         $result = $this->where(['ad_id'=>$id])->update($data);
+        return $result;
+    }
+    /*更新用户权限*/
+    public function saveAccess($id,$db){
+        $result = $this->where(['ad_id'=>$id])->update($db);
         return $result;
     }
 

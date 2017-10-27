@@ -201,7 +201,9 @@
                                             <button type="button" class="btn btn-success btn-rad btn-sm" data-id="{{$v->ad_id}}" onclick="enable(this)">启用</button>
                                         @endif
                                         <button type="button" class="btn btn-info btn-rad md-trigger edit btn-sm" data-modal="edit" data-id="{{$v->ad_id}}">编辑</button>
-                                        {{--<button type="button" class="btn btn-primary btn-rad">权限分组</button>--}}
+                                        @if(!$v->is_super)
+                                            <a href="{{url("/admin/setaccess/$v->ad_id")}}"><button type="button" class="btn btn-primary btn-rad btn-sm">分配权限</button></a>
+                                            @endif
                                         {{--<button type="button" class="btn btn-danger btn-rad">删除</button>--}}
                                             @else
                                             <button type="button" class="btn btn-info btn-rad disabled btn-sm">无操作</button>
@@ -268,12 +270,14 @@
 
             var id = $(t).attr('data-id');
             $.post('{{url('admin/disableadmin')}}',{id:id,_token: "{{csrf_token()}}"},function(data){
-                if(!data.flag){
-                    return false;
+                if(data.flag){
+                    alertsuccess(data.msg);
+                    $(t).parent().prepend('<button type="enable button" class="btn btn-success btn-rad btn-sm"data-id="'+id+'" onclick="enable(this)">启用</button>');
+                    $(t).remove();
+                }else {
+                    alertfail(data.msg);
                 }
             },'json')
-            $(t).parent().prepend('<button type="enable button" class="btn btn-success btn-rad"data-id="'+id+'" onclick="enable(this)">启用</button>');
-            $(t).remove();
 
 
 
@@ -283,12 +287,14 @@
 
             var id = $(t).attr('data-id');
             $.post('{{url('admin/enableadmin')}}',{id:id,_token: "{{csrf_token()}}"},function(data){
-                if(!data.flag){
-                    return false;
+                if(data.flag){
+                    $(t).parent().prepend('<button type="button" class="disable btn btn-warning btn-rad btn-sm" data-id="'+id+'" onclick="disable(this)">禁用</button>');
+                    $(t).remove();
+
+                }else{
+                    alertfail(data.msg);
                 }
             },'json')
-            $(t).parent().prepend('<button type="button" class="disable btn btn-warning btn-rad" data-id="'+id+'" onclick="disable(this)">禁用</button>');
-            $(t).remove();
 
 
         }

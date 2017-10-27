@@ -25,7 +25,7 @@ Route::get('/admin',function(){
 Route::get('/','AdminController@login_page');
 /*登录方法*/
 Route::post('/admin/login','AdminController@login');
-Route::group(['middleware'=>'admin.login'],function(){
+Route::group(['middleware'=>['admin.login','access']],function(){
     /*退出登录*/
     Route::get('/admin/loginout','AdminController@loginout');
     /*添加用户*/
@@ -39,13 +39,15 @@ Route::group(['middleware'=>'admin.login'],function(){
     /*获取用户信息*/
     Route::post('/admin/getadminInfo','AdminController@getAdminInfo');
     Route::post('/admin/editadmin','AdminController@editAdmin');
-    /*
+
     Route::get('/admin/accesslist','AdminController@accessList');
     Route::post('/admin/addAccess','AdminController@addAccess');
     Route::post('/admin/disable','AdminController@disable');
     Route::post('/admin/enable','AdminController@enable');
     Route::match(['get', 'post'],'/admin/editAccess/{id?}','AdminController@editAccess')->where('id', '[0-9]+');
-    Route::get('/admin/adminrole','AdminController@roleList');
+    Route::get('/admin/setaccess/{id}','AdminController@setAccess')->where('id', '[0-9]+');
+    Route::post('/admin/saveaccess','AdminController@saveAccess');
+    /*Route::get('/admin/adminrole','AdminController@roleList');
     Route::post('/admin/addrole','AdminController@addroles');
     Route::post('/admin/disablerole','AdminController@disableRole');
     Route::post('/admin/enablerole','AdminController@enableRole');*/

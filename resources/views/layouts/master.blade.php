@@ -211,13 +211,18 @@
                         </li>
 
                         <li><a href="{{url('admin/customerlist')}}"><i class="fa fa-users"></i><span>客户管理</span></a>
-                        <li><a href="{{url('admin/adminlist')}}"><i class="fa fa-user"></i><span>用户管理</span></a>
-                            {{--<ul class="sub-menu">
-                                <li class="@yield('active')"><a href="{{url('admin/adminlist')}}">用户管理</a></li>
-                                <li class="@yield('active')"><a href="{{url('admin/adminrole')}}">分组管理</a></li>
-                                <li class="@yield('active')"><a href="{{url('admin/accesslist')}}">权限管理</a></li>
-                            </ul>--}}
                         </li>
+                        <li><a href=""><i class="fa fa-user"></i><span>管理员管理</span></a>
+                            <ul class="sub-menu">
+                                <li class="@yield('active')"><a href="{{url('admin/adminlist')}}">用户管理</a></li>
+                                {{--<li class="@yield('active')"><a href="{{url('admin/adminrole')}}">分组管理</a></li>--}}
+                                <li class="@yield('active')"><a href="{{url('admin/accesslist')}}">权限管理</a></li>
+                            </ul>
+                        </li>
+
+                        {{--<li><a href="{{url('admin/accesslist')}}"><i class="fa fa-bar-chart-o"></i><span>权限管理</span></a>
+
+                        </li>--}}
 
                         <li><a href="{{url('/admin/charts')}}"><i class="fa fa-bar-chart-o"></i><span>销售统计</span></a>
 
