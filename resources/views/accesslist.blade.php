@@ -110,12 +110,12 @@
                                         <td style="vertical-align: middle">{{$n->url}}</td>
                                         <td style="vertical-align: middle">{{date('Y-m-d H:i:s',$n->update_time)}}</td>
                                         <td style="vertical-align: middle" class="text-right">
-                                            @if($n->status)
+                                            {{--@if($n->status)
 
                                                 <button type="button" class="disable btn btn-warning btn-rad btn-sm" data-id="{{$n->id}}" onclick="disable(this)">禁用</button>
                                             @else
                                                 <button type="button" class="enable btn btn-success btn-rad btn-sm" data-id="{{$n->id}}" onclick="enable(this)">启用</button>
-                                            @endif
+                                            @endif--}}
                                                 <a href="{{url("admin/editAccess/$n->id")}}">
                                             <button type="button" class="btn btn-info btn-rad btn-sm"
                                                      >编辑
