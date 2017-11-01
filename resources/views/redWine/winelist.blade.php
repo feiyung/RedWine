@@ -51,10 +51,28 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPassword3" class="col-sm-3 control-label">单价</label>
+                                            <label for="inputPassword3" class="col-sm-3 control-label">内部单价</label>
                                             <div class="col-sm-7">
                                                 <input type="text" required="" class="form-control"
-                                                       id="inputPassword3" placeholder="长度0~10" name="price"
+                                                       id="inputPassword3" placeholder="长度0~10" name="price_in"
+                                                       data-parsley-id="2907" maxlength="10" minlength="0">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label">线上单价</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" required="" class="form-control"
+                                                       id="inputPassword3" placeholder="长度0~10" name="price_line"
+                                                       data-parsley-id="2907" maxlength="10" minlength="0">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label">经销商单价</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" required="" class="form-control"
+                                                       id="inputPassword3" placeholder="长度0~10" name="price_c"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
 
                                             </div>
@@ -108,10 +126,28 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPassword3" class="col-sm-3 control-label">单价</label>
+                                            <label for="inputPassword3" class="col-sm-3 control-label">内部单价</label>
                                             <div class="col-sm-7">
                                                 <input type="text" required="" class="form-control"
-                                                       id="inputPassword3" placeholder="长度0~10" name="price_e"
+                                                       id="inputPassword3" placeholder="长度0~10" name="price_in_e"
+                                                       data-parsley-id="2907" maxlength="10" minlength="0">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label">线上单价</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" required="" class="form-control"
+                                                       id="inputPassword3" placeholder="长度0~10" name="price_line_e"
+                                                       data-parsley-id="2907" maxlength="10" minlength="0">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label">经销商单价</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" required="" class="form-control"
+                                                       id="inputPassword3" placeholder="长度0~10" name="price_c_e"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
 
                                             </div>
@@ -166,9 +202,11 @@
                                         <div class="form-group">
                                             <label for="inputPassword3" class="col-sm-3 control-label">单价</label>
                                             <div class="col-sm-7">
-                                                <input type="text" readonly class="form-control"
-                                                       id="inputPassword3" placeholder="长度0~10" name="price_o"
-                                                       data-parsley-id="2907" maxlength="10" minlength="0">
+                                                <select class="form-control" name="price_o">
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    </select>
 
                                             </div>
                                         </div>
@@ -255,7 +293,9 @@
                                 <tr>
                                     <th>编号</th>
                                     <th>红酒名称</th>
-                                    <th class="">单价(RMB)</th>
+                                    <th >内部单价(RMB)</th>
+                                    <th >线上单价(RMB)</th>
+                                    <th >经销商单价(RMB)</th>
                                     <th>销量(瓶)</th>
                                     <th>库存(瓶)</th>
                                     <th>描述</th>
@@ -268,6 +308,8 @@
                                         <td style="vertical-align: middle">{{$n->id}}</td>
                                         <td style="vertical-align: middle">{{$n->wine_name}}</td>
                                         <td style="vertical-align: middle">&yen;{{number_format($n->price)}}</td>
+                                        <td style="vertical-align: middle">&yen;{{number_format($n->price_line)}}</td>
+                                        <td style="vertical-align: middle">&yen;{{number_format($n->price_c)}}</td>
                                         <td style="vertical-align: middle">{{$n->sales_num}}</td>
                                         <td style="vertical-align: middle">{{$n->sku_num}}</td>
                                         <td style="vertical-align: middle">{{$n->description}}</td>
@@ -325,7 +367,9 @@
 /*添加*/
         $('#submit').click(function () {
             var wine_name = $("input[name='wine_name']").val();
-            var price = $("input[name='price']").val();
+            var price_in = $("input[name='price_in']").val();//内部价
+            var price_line = $("input[name='price_line']").val();//线上价
+            var price_c = $("input[name='price_c']").val();//经销商价
             var sku_num = $("input[name='sku_num']").val();
             var desc = $("textarea[name='desc']").val();
             if(!wine_name.length){
@@ -333,7 +377,15 @@
                 return false;
             }
             var reg_price = /^[1-9]\d*\.?\d{0,2}$/;
-            if(!reg_price.test(price)){
+            if(!reg_price.test(price_in)){
+                alertfail('请输入有效数字价格！');
+                return false;
+            }
+            if(!reg_price.test(price_line)){
+                alertfail('请输入有效数字价格！');
+                return false;
+            }
+            if(!reg_price.test(price_c)){
                 alertfail('请输入有效数字价格！');
                 return false;
             }
@@ -345,7 +397,9 @@
 
             $.post('{{url('/admin/addwine')}}', {
                 wine_name: wine_name,
-                price: price,
+                price_c: price_c,
+                price_in:price_in,
+                price_line:price_line,
                 sku_num: sku_num,
                 desc:desc,
                 _token: "{{csrf_token()}}"
@@ -369,7 +423,9 @@
                 _token: "{{csrf_token()}}"},function(data){
                     if(data.flag){
                         $("input[name='wine_name_e']").val(data.data.wine_name);
-                        $("input[name='price_e']").val(data.data.price);
+                        $("input[name='price_c_e']").val(data.data.price_c);
+                        $("input[name='price_line_e']").val(data.data.price_line);
+                        $("input[name='price_in_e']").val(data.data.price);
                         $("input[name='sku_num_e']").val(data.data.sku_num);
                         $("textarea[name='desc_e']").val(data.data.description);
                         $("#submit_e").attr('data-id',data.data.id);
@@ -380,7 +436,9 @@
 
         $('#submit_e').click(function () {
             var wine_name = $("input[name='wine_name_e']").val();
-            var price = $("input[name='price_e']").val();
+            var price_in = $("input[name='price_in_e']").val();//内部价
+            var price_line = $("input[name='price_line_e']").val();//线上价
+            var price_c = $("input[name='price_c_e']").val();//经销商价
             var sku_num = $("input[name='sku_num_e']").val();
             var desc = $("textarea[name='desc_e']").val();
             var id = $(this).attr('data-id');
@@ -389,7 +447,15 @@
                 return false;
             }
             var reg_price = /^[1-9]\d*\.?\d{0,2}$/;
-            if(!reg_price.test(price)){
+            if(!reg_price.test(price_in)){
+                alertfail('请输入有效数字价格！');
+                return false;
+            }
+            if(!reg_price.test(price_line)){
+                alertfail('请输入有效数字价格！');
+                return false;
+            }
+            if(!reg_price.test(price_c)){
                 alertfail('请输入有效数字价格！');
                 return false;
             }
@@ -400,7 +466,9 @@
             }
             $.post('{{url('/admin/updwine')}}', {
                 wine_name: wine_name,
-                price: price,
+                price_c: price_c,
+                price_in:price_in,
+                price_line:price_line,
                 sku_num: sku_num,
                 desc:desc,
                 id:id,
@@ -425,7 +493,9 @@
                 _token: "{{csrf_token()}}"},function(data){
                 if(data.flag){
                     $("input[name='wine_name_o']").val(data.data.wine_name);
-                    $("input[name='price_o']").val(data.data.price);
+                    $("select[name='price_o'] option").eq(0).val(data.data.price).html('内部价：&yen;'+data.data.price);
+                    $("select[name='price_o'] option").eq(1).val(data.data.price_line).html('线上价：&yen;'+data.data.price_line);
+                    $("select[name='price_o'] option").eq(2).val(data.data.price_c).html('经销商价:&yen;'+data.data.price_c);
                     $("#submit_o").attr('data-id',data.data.id);
 
                 }
@@ -443,7 +513,7 @@
         })
         $('#submit_o').click(function () {
             var wine_name = $("input[name='wine_name_o']").val();
-            var price = $("input[name='price_o']").val();
+            var price = $("select[name='price_o']").val();
             var wine_num = $("input[name='wine_num']").val();
             var buy_name = $("input[name='buy_name']").val();
             var buy_tel = $("input[name='buy_tel']").val();
@@ -501,34 +571,7 @@
             }, 'json')
 
         });
-       /* function disable(t) {
 
-            var id = $(t).attr('data-id');
-            $.post('{{url('admin/disable')}}',{id:id,_token: "{{csrf_token()}}"},function(data){
-                if(!data.flag){
-                    return false;
-                }
-            },'json')
-            $(t).parent().prepend('<button type="enable button" class="btn btn-success btn-rad"data-id="'+id+'" onclick="enable(this)">启用</button>');
-            $(t).remove();
-
-
-
-        }
-
-        function enable(t){
-
-            var id = $(t).attr('data-id');
-            $.post('{{url('admin/enable')}}',{id:id,_token: "{{csrf_token()}}"},function(data){
-                if(!data.flag){
-                    return false;
-                }
-            },'json')
-            $(t).parent().prepend('<button type="button" class="disable btn btn-warning btn-rad" data-id="'+id+'" onclick="disable(this)">禁用</button>');
-            $(t).remove();
-
-
-        }*/
 
     </script>
 @endsection

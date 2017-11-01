@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-10-27 17:01:27
+Date: 2017-11-01 16:44:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,8 +38,8 @@ CREATE TABLE `zy_admin` (
 -- ----------------------------
 -- Records of zy_admin
 -- ----------------------------
-INSERT INTO `zy_admin` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '1507687426', '1509094795', '24', '1', '1', '0', '[\"3\",\"4\",\"6\"]', '[\"1\",\"5\"]', '1509093920');
-INSERT INTO `zy_admin` VALUES ('2', '黄飞', 'e10adc3949ba59abbe56e057f20f883e', '1507778588', '1509094778', '5', '0', '1', '0', null, null, '1509085867');
+INSERT INTO `zy_admin` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '1507687426', '1509500385', '30', '1', '1', '0', '[\"3\",\"4\",\"6\"]', '[\"1\",\"5\"]', '1509093920');
+INSERT INTO `zy_admin` VALUES ('2', '黄飞', 'e10adc3949ba59abbe56e057f20f883e', '1507778588', '1509094778', '5', '0', '1', '0', '[\"2\",\"3\",\"4\"]', '[\"1\"]', '1509331958');
 INSERT INTO `zy_admin` VALUES ('3', '刘翔', 'e10adc3949ba59abbe56e057f20f883e', '1509085888', '0', '0', '0', '1', '0', null, null, '1509085888');
 
 -- ----------------------------
@@ -54,7 +54,7 @@ CREATE TABLE `zy_adminlog` (
   `ad_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '操作人id',
   `act_ip` varchar(20) NOT NULL COMMENT '操作ip',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of zy_adminlog
@@ -110,6 +110,12 @@ INSERT INTO `zy_adminlog` VALUES ('48', '订单号：2017101821079，赊账，�
 INSERT INTO `zy_adminlog` VALUES ('49', '创建订单成功,订单号：2017102628310，客户名:刘翔', '1508984786', 'admin', '1', '127.0.0.1');
 INSERT INTO `zy_adminlog` VALUES ('50', '订单号：2017102628310，现金收款：10元，未付金额：40元', '1508984806', 'admin', '1', '127.0.0.1');
 INSERT INTO `zy_adminlog` VALUES ('51', '订单号：2017102441681，现金收款：1元，未付金额：79元', '1508984842', 'admin', '1', '127.0.0.1');
+INSERT INTO `zy_adminlog` VALUES ('52', '订单号：2017102628310，赊账，未付金额：40元', '1509345202', 'admin', '1', '127.0.0.1');
+INSERT INTO `zy_adminlog` VALUES ('53', '订单号：2017102628310，现金收款：20元，未付金额：20元', '1509345216', 'admin', '1', '127.0.0.1');
+INSERT INTO `zy_adminlog` VALUES ('54', '添加红酒成功！编号：8，红酒名：111，单价：111元，库存：11', '1509419612', 'admin', '1', '127.0.0.1');
+INSERT INTO `zy_adminlog` VALUES ('55', '编辑红酒成功！编号：8，红酒名：1112，单价：111元，库存：11', '1509420181', 'admin', '1', '127.0.0.1');
+INSERT INTO `zy_adminlog` VALUES ('56', '创建订单成功,订单号：2017103192703，客户名:黄飞', '1509420823', 'admin', '1', '127.0.0.1');
+INSERT INTO `zy_adminlog` VALUES ('57', '编辑红酒成功！编号：8，红酒名：1112，单价：1110元，库存：10', '1509516014', 'admin', '1', '127.0.0.1');
 
 -- ----------------------------
 -- Table structure for zy_admin_access
@@ -129,7 +135,7 @@ CREATE TABLE `zy_admin_access` (
 -- ----------------------------
 -- Records of zy_admin_access
 -- ----------------------------
-INSERT INTO `zy_admin_access` VALUES ('1', '0', '管理员管理', '', '1507526065', '1507540342', '0');
+INSERT INTO `zy_admin_access` VALUES ('1', '0', '管理员管理', '', '1507526065', '1507540342', '1');
 INSERT INTO `zy_admin_access` VALUES ('2', '1', '用户管理', 'admin/adminlist', '1507526981', '1507539725', '1');
 INSERT INTO `zy_admin_access` VALUES ('3', '1', '权限管理', 'admin/accesslist', '1507527127', '1507539739', '1');
 INSERT INTO `zy_admin_access` VALUES ('4', '1', '分组管理', '', '1507539776', '1507540426', '1');
@@ -194,20 +200,23 @@ CREATE TABLE `zy_redwine` (
   `create_time` int(11) unsigned DEFAULT '0',
   `update_time` int(11) DEFAULT '0',
   `status` tinyint(1) unsigned DEFAULT NULL,
+  `price_line` int(10) unsigned DEFAULT NULL COMMENT '线上价',
+  `price_c` int(10) unsigned DEFAULT NULL COMMENT '经销商价',
   `price` int(10) unsigned DEFAULT NULL COMMENT '价格',
   `description` varchar(255) DEFAULT NULL COMMENT '说明',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='红酒表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='红酒表';
 
 -- ----------------------------
 -- Records of zy_redwine
 -- ----------------------------
-INSERT INTO `zy_redwine` VALUES ('1', '拉菲', null, null, '70', '30', '1507615977', '1508828623', '1', '10000', '拉菲拉菲拉菲');
-INSERT INTO `zy_redwine` VALUES ('2', '波尔多干红', null, null, '11', '90', '1507618839', '1507618839', '1', '500', '');
-INSERT INTO `zy_redwine` VALUES ('3', '长城干红', null, null, '56', '44', '1507620284', '1507620336', '1', '100', '干红');
-INSERT INTO `zy_redwine` VALUES ('4', 'AD钙奶', null, null, '9', '91', '1507860126', '1508309536', '1', '2', '儿时回忆');
-INSERT INTO `zy_redwine` VALUES ('5', '娃哈哈', null, null, '10', '90', '1508470506', '1508470506', '1', '5', '');
-INSERT INTO `zy_redwine` VALUES ('6', '脉动', null, null, '10', '90', '1508470567', '1508470779', '1', '8', '');
+INSERT INTO `zy_redwine` VALUES ('1', '拉菲', null, null, '70', '30', '1507615977', '1508828623', '1', null, null, '10000', '拉菲拉菲拉菲');
+INSERT INTO `zy_redwine` VALUES ('2', '波尔多干红', null, null, '11', '90', '1507618839', '1507618839', '1', null, null, '500', '');
+INSERT INTO `zy_redwine` VALUES ('3', '长城干红', null, null, '56', '44', '1507620284', '1507620336', '1', null, null, '100', '干红');
+INSERT INTO `zy_redwine` VALUES ('4', 'AD钙奶', null, null, '9', '91', '1507860126', '1508309536', '1', null, null, '2', '儿时回忆');
+INSERT INTO `zy_redwine` VALUES ('5', '娃哈哈', null, null, '10', '90', '1508470506', '1508470506', '1', null, null, '5', '');
+INSERT INTO `zy_redwine` VALUES ('6', '脉动', null, null, '10', '90', '1508470567', '1508470779', '1', null, null, '8', '');
+INSERT INTO `zy_redwine` VALUES ('8', '1112', null, null, '1', '10', '1509419612', '1509516014', '1', '11', '1', '1110', '');
 
 -- ----------------------------
 -- Table structure for zy_sku
@@ -253,7 +262,7 @@ CREATE TABLE `zy_wineorder` (
   `create_time` int(11) unsigned DEFAULT NULL,
   `update_time` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of zy_wineorder
@@ -282,4 +291,5 @@ INSERT INTO `zy_wineorder` VALUES ('21', '2017102028407', '3', '长城干红', '
 INSERT INTO `zy_wineorder` VALUES ('22', '2017102060659', '4', 'AD钙奶', '2', '20', '40', '0', '2', '1', 'admin', '4', '刘翔', '15223408636', '重庆江北', '2', '1508469926', '1508469926');
 INSERT INTO `zy_wineorder` VALUES ('23', '2017102441681', '6', '脉动', '8', '10', '80', '79', '2', '1', 'admin', '4', '刘翔', '15223408636', '重庆江北', '0', '1508812377', '1508812377');
 INSERT INTO `zy_wineorder` VALUES ('24', '2017102442278', '1', '拉菲', '10000', '20', '200000', '200000', '0', '1', 'admin', '4', '刘翔', '15223408636', '重庆江北', '0', '1508828647', '1508828647');
-INSERT INTO `zy_wineorder` VALUES ('25', '2017102628310', '5', '娃哈哈', '5', '10', '50', '40', '2', '1', 'admin', '4', '刘翔', '15223408636', '重庆江北', '0', '1508984786', '1508984786');
+INSERT INTO `zy_wineorder` VALUES ('25', '2017102628310', '5', '娃哈哈', '5', '10', '50', '20', '1', '1', 'admin', '4', '刘翔', '15223408636', '重庆江北', '0', '1508984786', '1508984786');
+INSERT INTO `zy_wineorder` VALUES ('26', '2017103192703', '8', '1112', '11', '1', '11', '11', '0', '1', 'admin', '1', '黄飞', '15223408636', '重庆渝北区', '0', '1509420823', '1509420823');

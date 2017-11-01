@@ -32,6 +32,11 @@ class WineOrder extends Model
         $result = $this->orderBy('create_time', 'desc')->paginate(20);;
         return $result;
     }
+    /*根据时间段获取订单列表*/
+    public function getList($time1,$time2){
+        $result = $this->whereBetween('create_time',[$time1,$time2])->orderBy('create_time', 'desc')->get();;
+        return $result;
+    }
 
     /*
  * 创建订单

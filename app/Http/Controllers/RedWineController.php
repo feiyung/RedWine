@@ -13,8 +13,10 @@ use App\Model\AdminLog;
 use App\Model\Customer;
 use App\Model\RedWine;
 use App\Model\WineOrder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Excel;
 
 class RedWineController extends Controller
 {
@@ -37,8 +39,12 @@ class RedWineController extends Controller
     {
         $redWine = new RedWine();
         $input = Input::all();
+        $data = [
+            'price'=>$input['price_in'],
+            'price_c'=>$input['price_c'],
+            'price_line'=>$input['price_line']
+        ];
         $data['wine_name'] = $input['wine_name'];
-        $data['price'] = $input['price'];
         $data['sku_num'] = $input['sku_num'];
         $data['description'] = $input['desc'];
         $data['create_time'] = time();
@@ -74,8 +80,12 @@ class RedWineController extends Controller
     public function editWine()
     {
         $input = Input::all();
+        $data = [
+            'price'=>$input['price_in'],
+            'price_c'=>$input['price_c'],
+            'price_line'=>$input['price_line']
+        ];
         $data['wine_name'] = $input['wine_name'];
-        $data['price'] = $input['price'];
         $data['sku_num'] = $input['sku_num'];
         $data['description'] = $input['desc'];
         $data['update_time'] = time();
@@ -183,30 +193,55 @@ class RedWineController extends Controller
     }
 
     /*订单线详情*/
-    public function detail()
+    public function detail(Request $request)
     {
         $wineOrder = new WineOrder();
-        $input = Input::all();
-        $res = $wineOrder->getOneorder($input['id']);
-        $res->create_time = date('Y-m-d H:i', $res->create_time);
-        if ($res->order_status == 0) {
-            $res->order_status = '未付款';
-        } elseif ($res->order_status == 1) {
-            $res->order_status = '已付款';
-        }elseif ($res->order_status == 2) {
-            $res->order_status = '退货退款';
+        if($request->isMethod('post')){
+                $input = Input::all();
+                $res = $wineOrder->getOneorder($input['id']);
+                $res->create_time = date('Y-m-d H:i', $res->create_time);
+                if ($res->order_status == 0) {
+                    $res->order_status = '未付款';
+                } elseif ($res->order_status == 1) {
+                    $res->order_status = '已付款';
+                }elseif ($res->order_status == 2) {
+                    $res->order_status = '退货退款';
+                }
+
+                if($res->pay_way == 1){
+                    $res->pay_way = '支付宝';
+                }elseif ($res->pay_way == 2){
+                    $res->pay_way = '现金';
+                }elseif ($res->pay_way == 3){
+                    $res->pay_way = '赊账';
+                }elseif ($res->pay_way == 0){
+                    $res->pay_way = '未付款';
+                }
+            trueAjax('', $res);
+        }else{
+
+            $res = $wineOrder->getOneorder($request->id);
+            $res->create_time = date('Y-m-d H:i', $res->create_time);
+            if ($res->order_status == 0) {
+                $res->order_status = '未付款';
+            } elseif ($res->order_status == 1) {
+                $res->order_status = '已付款';
+            }elseif ($res->order_status == 2) {
+                $res->order_status = '退货退款';
+            }
+
+            if($res->pay_way == 1){
+                $res->pay_way = '支付宝';
+            }elseif ($res->pay_way == 2){
+                $res->pay_way = '现金';
+            }elseif ($res->pay_way == 3){
+                $res->pay_way = '赊账';
+            }elseif ($res->pay_way == 0){
+                $res->pay_way = '未付款';
+            }
+            return view('redWine.inventory',compact('res'));
         }
 
-        if($res->pay_way == 1){
-            $res->pay_way = '支付宝';
-        }elseif ($res->pay_way == 2){
-            $res->pay_way = '现金';
-        }elseif ($res->pay_way == 3){
-            $res->pay_way = '赊账';
-        }elseif ($res->pay_way == 0){
-            $res->pay_way = '未付款';
-        }
-        trueAjax('', $res);
     }
 
     /*退货退款*/
@@ -297,6 +332,81 @@ class RedWineController extends Controller
         $money = $orderwine->getMoney($id);
         return view('redWine.cusorderlist',compact('list','info','countall','countno','countre','countyes','money','id'));
     }
+    /*导出订单到excel*/
+    public function downloadExcel(Request $request){
+        if(empty($request->timerange)){
+            $time1 = 0;
+            $time2 = time();
+        }else{
+            $time = explode(' - ',$request->timerange);
+            $time1 =  strtotime($time[0]);
+            $time2 =  mktime(23, 59, 59,date('m',strtotime($time[1])),date('d',strtotime($time[1])),date('Y',strtotime($time[1])));
+
+        }
+
+
+
+        $order = new WineOrder();
+        $data = $order->getList($time1,$time2);
+        if(!$data->count()){
+            $prev_path = url()->previous();
+            echo "<script>
+                    alert('该时间段没有相关数据！');
+                    location.href='".$prev_path."';
+                </script>";
+        }
+        foreach ($data as $k=>$v){
+            $cellData[] = array(
+                '订单编号' => $v->order_num,
+                '红酒名称' => $v->wine_name,
+                '单价(RMB)' => $v->price,
+                '数量(瓶)' => $v->wine_num,
+                '订单总价' => $v->total_price,
+                '未付金额' => $v->debt_price,
+                '订单状态' => $v->order_status,
+                '付款方式' => $v->pay_way,
+                '客户姓名' => $v->buy_name,
+                '客户电话' => $v->buy_tel,
+                '客户地址' => $v->buy_addr,
+                '订单创建人' => $v->ad_name,
+                '创建时间' => date('Y-m-d H:i',$v->create_time),
+
+            );
+        }
+
+        Excel::create('订单信息',function($excel) use ($cellData){
+            $excel->sheet('订单信息', function($sheet) use ($cellData){
+                $sheet->fromArray($cellData);
+                $sheet->setWidth(array(
+                    'A'=>20,
+                    'B'=>20,
+                    'C'=>10,
+                    'D'=>10,
+                    'E'=>10,
+                    'F'=>10,
+                    'G'=>10,
+                    'H'=>10,
+                    'I'=>10,
+                    'J'=>20,
+                    'K'=>20,
+                    'L'=>15,
+                    'M'=>20
+                ));
+
+                /*$sheet->cells('', function($cells) {
+
+
+                    $cells->setAlignment('center');
+
+                });
+                $sheet->setAutoSize(true);
+                $sheet->setAllBorders('thin');*/
+                $sheet->freezeFirstRow();
+
+            });
+        })->export('xls');
+    }
+
     /*抵账*/
     public function repay(){
         $wineorder = new WineOrder();

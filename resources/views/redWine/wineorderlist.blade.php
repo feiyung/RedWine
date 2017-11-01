@@ -23,11 +23,51 @@
                     <div class="block-flat">
                         <div class="header">
                             {{--<h3>Full-Borders Table</h3>--}}
+                            <button type="button" class="btn btn-info btn-rad btn-sm md-trigger" data-modal="excel">导出到excel</button>
 
-                            {{--<button class="btn btn-success btn-flat md-trigger btn-rad btn-lg"
-                                    data-modal="colored-success">添加红酒
-                            </button>--}}
 
+
+                        </div>
+                        <div class="md-modal colored-header  info md-effect-3" id="excel">
+                            <div class="md-content">
+                                <div class="modal-header">
+                                    <h3>选择时间范围</h3>
+                                    <button type="button" class="close md-close" data-dismiss="modal"
+                                            aria-hidden="true">×
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form class="form-horizontal group-border-dashed" action="{{url('/admin/excel')}}" style="border-radius: 0px;" id="getexcel" method="get">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                时间范围
+                                            </label>
+                                            <div class="col-sm-6">
+                                                <fieldset>
+                                                    <div class="control-group">
+                                                        <div class="controls">
+                                                            <div class="input-prepend input-group">
+                                                                <span class="add-on input-group-addon primary"><span class="glyphicon glyphicon-th"></span></span><input type="text" style="width: 200px" name="timerange" id="reservation" class="form-control" value="2017/10/01 - 2017/10/31" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </form>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-flat md-close"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-flat md-close"
+                                            data-dismiss="modal" id="downexcel">确定
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div class="md-modal colored-header  primary md-effect-3" id="payway">
                             <div class="md-content">
@@ -90,7 +130,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
+                                <div class="modal-footer" id="print">
 
                                 </div>
                             </div>
@@ -146,6 +186,7 @@
                                                 <button type="button" class="btn btn-danger btn-rad btn-sm">确认收款</button>--}}
                                             @elseif($n->order_status==1)
                                                 <button type="button" class="btn btn-warning btn-rad btn-sm reject" data-id="{{$n->id}}">退货退款</button>
+
                                             @endif
                                             <button type="button" class="btn btn-info btn-rad md-trigger detail btn-sm"
                                                     data-modal="detail" data-id="{{$n->id}}">详情</button>
@@ -253,8 +294,10 @@
    $(".detail").click(function(){
        var id = $(this).attr('data-id');
        var str = '';
+       var print = '';
 
        $("#detail_info").empty();
+       $("#print").empty();
        $.post("{{url('/admin/orderdetail')}}",{id:id,_token:"{{csrf_token()}}"},function(data){
             str = `<tr>
                         <td style="width:30%;" class="text-right">订单编号：</td>
@@ -322,11 +365,81 @@
                         <td class="text-center">`+data.data.create_time+`</td>
 
                     </tr>`;
+           print = '<a href="/admin/orderdetail/'+data.data.id+'"><button type="button" class="btn btn-info btn-rad btn-sm">打印订单</button></a>';
            $("#detail_info").append(str);
+           $("#print").append(print);
 
 
        },'json')
    })
 
+        $("#downexcel").click(function(){
+            $("#getexcel").submit();
+        })
+
+$(function(){
+    $('#reservationtime').daterangepicker({
+        timePicker: true,
+        timePickerIncrement: 30,
+        format: 'MM/DD/YYYY h:mm A'
+    });
+    var cb = function(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + "]");
+    }
+
+    var optionSet1 = {
+        startDate: moment().subtract('days', 29),
+        endDate: moment(),
+        minDate: '2017/01/01',
+        maxDate: '2050/12/31',
+        dateLimit: { days: 60 },
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+
+        },
+        opens: 'left',
+        buttonClasses: ['btn'],
+        applyClass: 'btn-small btn-primary',
+        cancelClass: 'btn-small',
+        format: 'YYYY/MM/DD',
+        separator: ' - ',
+        locale: {
+            applyLabel: '确定',
+            cancelLabel: '取消',
+            fromLabel: 'From',
+            toLabel: 'To',
+            customRangeLabel: '选择时间',
+            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            firstDay: 1
+        }
+    };
+
+    var optionSet2 = {
+        startDate: moment().subtract('days', 7),
+        endDate: moment(),
+        opens: 'left',
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+            'Last 7 Days': [moment().subtract('days', 6), moment()],
+            'Last 30 Days': [moment().subtract('days', 29), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+        }
+    };
+
+    $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+    $('#reportrange').daterangepicker(optionSet1, cb);
+    $('#reservation').daterangepicker(optionSet1);
+
+
+})
     </script>
 @endsection

@@ -62,6 +62,7 @@ Route::group(['middleware'=>['admin.login','access']],function(){
     Route::post('/admin/updwine','RedWineController@editWine');
     /*订单列表*/
     Route::get('/admin/orderlist','RedWineController@orderList');
+    Route::get('/admin/excel','RedWineController@downloadExcel');
     /*创建订单*/
     Route::post('/admin/createorder','RedWineController@createOrder');
     /*支付方式*/
@@ -69,7 +70,7 @@ Route::group(['middleware'=>['admin.login','access']],function(){
     /*支付宝支付*/
     Route::get('/admin/pay/{id}','RedWineController@pay')->where('id', '[0-9]+');
     /*订单详情*/
-    Route::post('/admin/orderdetail','RedWineController@detail');
+    Route::match(['post','get'],'/admin/orderdetail/{id?}','RedWineController@detail');
     /*客户列表*/
     Route::get('/admin/customerlist','RedWineController@customerList');
     /*添加客户*/
