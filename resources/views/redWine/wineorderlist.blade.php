@@ -1,16 +1,19 @@
 @extends('layouts.master')
 @section('title')
-    订单列表
+    线下订单列表
+@endsection
+@section('offline')
+    active
 @endsection
 
 @section('content')
     <div class="container-fluid">
         <div class="page-head">
-            <h2>订单列表</h2>
+            <h2>线下订单列表</h2>
             <ol class="breadcrumb">
                 <li><a href="#">首页</a></li>
                 <li><a href="#">订单管理</a></li>
-                <li class="active">订单列表</li>
+                <li class="active">线下订单列表</li>
             </ol>
         </div>
         <div class="cl-mcont" style="padding: 0">
@@ -23,7 +26,8 @@
                     <div class="block-flat">
                         <div class="header">
                             {{--<h3>Full-Borders Table</h3>--}}
-                            <button type="button" class="btn btn-info btn-rad btn-sm md-trigger" data-modal="excel">导出到excel</button>
+                            <button type="button" class="btn btn-info btn-rad btn-sm md-trigger " data-modal="excel">导出到excel</button>
+                            <button type="button" class="btn btn-info btn-rad btn-sm md-trigger " data-modal="time_range">分时查看</button>
 
 
 
@@ -48,7 +52,7 @@
                                                     <div class="control-group">
                                                         <div class="controls">
                                                             <div class="input-prepend input-group">
-                                                                <span class="add-on input-group-addon primary"><span class="glyphicon glyphicon-th"></span></span><input type="text" style="width: 200px" name="timerange" id="reservation" class="form-control" value="2017/10/01 - 2017/10/31" />
+                                                                <span class="add-on input-group-addon primary"><span class="glyphicon glyphicon-th"></span></span><input type="text" style="width: 200px" name="timerange" id="reservation" class="form-control" value="2017/10/01 - 2017/10/31" readonly/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -65,6 +69,58 @@
                                     </button>
                                     <button type="submit" class="btn btn-primary btn-flat md-close"
                                             data-dismiss="modal" id="downexcel">确定
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md-modal colored-header  info md-effect-3" id="time_range">
+                            <div class="md-content">
+                                <div class="modal-header">
+                                    <h3>选择时间</h3>
+                                    <button type="button" class="close md-close" data-dismiss="modal"
+                                            aria-hidden="true">×
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form class="form-horizontal" action="{{url('/admin/scan/range')}}" style="border-radius: 0px;" id="scan" method="get">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                时间范围
+                                            </label>
+                                            <div class="col-sm-6">
+                                                <fieldset>
+                                                    <div class="control-group">
+                                                        <div class="controls">
+                                                            <div class="input-prepend input-group">
+                                                                <span class="add-on input-group-addon primary"><span class="glyphicon glyphicon-th"></span></span><input type="text" style="width: 200px" name="timerange" id="reservationss" class="form-control" value="" readonly/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        {{--<div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                快捷筛选
+                                            </label>
+                                            <div class="col-sm-6">
+                                                <a href="{{url('admin/orderlist')}}"><button type="button" class="btn btn-info btn-rad btn-sm ">全部</button></a>
+                                                <a href="{{url('admin/scan/today')}}"><button type="button" class="btn btn-info btn-rad btn-sm ">今天</button></a>
+                                                    <a href="{{url('admin/scan/month')}}"><button type="button" class="btn btn-info btn-rad btn-sm ">本月</button></a>
+                                                        <a href="{{url('admin/scan/year')}}"><button type="button" class="btn btn-info btn-rad btn-sm ">本年</button></a>
+                                            </div>
+                                        </div>--}}
+                                    </form>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-flat md-close"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-flat md-close"
+                                            data-dismiss="modal" id="goscan">确定
                                     </button>
                                 </div>
                             </div>
@@ -136,11 +192,20 @@
                             </div>
                         </div>
                         <div class="md-overlay"></div>
+                        {{--<div class="tab-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#">Home</a></li>
+                                <li><a href="#" style="color: #555">Profile</a></li>
+                                <li><a href="#" style="color: #555">Messages</a></li>
+                            </ul>
+                        </div>--}}
                         <div class="content">
-                            <table class="table no-border hover">
+                            <div class="table-responsive">
+                            <table class="table no-border hover" id="datatable-icons">
                                 <thead class="no-border">
                                 <tr>
                                     <th>订单号</th>
+                                    <th>三联单号</th>
                                     <th>红酒名称</th>
                                     <th class="">单价(RMB)</th>
                                     <th>数量(瓶)</th>
@@ -148,6 +213,8 @@
                                     <th>未付金额</th>
                                     <th>买家姓名</th>
                                     <th>订单状态</th>
+                                    <th>创建时间</th>
+
                                     <th class="text-right">操作</th>
                                 </tr>
                                 </thead>
@@ -155,6 +222,7 @@
                                 @foreach($alllist as $n)
                                     <tr>
                                         <td style="vertical-align: middle">{{$n->order_num}}</td>
+                                        <td style="vertical-align: middle">{{$n->san_num}}</td>
                                         <td style="vertical-align: middle">{{$n->wine_name}}</td>
                                         <td style="vertical-align: middle">&yen;{{number_format($n->price)}}</td>
                                         <td style="vertical-align: middle">{{$n->wine_num}}</td>
@@ -170,6 +238,7 @@
                                                 退货退款
                                             @endif
                                         </td>
+                                        <td style="vertical-align: middle">{{date('Y-m-d H:i',$n->create_time)}}</td>
                                         <td style="vertical-align: middle" class="text-right">
                                             {{--@if($n->status)
 
@@ -181,9 +250,9 @@
                                             {{--<button type="button" class="editw btn btn-info btn-rad md-trigger"
                                                     data-modal="edit" data-id="{{$n->id}}">编辑</button>--}}
                                             @if($n->order_status==0)
-                                            <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="payway" data-id="{{$n->id}}">付款方式</button>
-                                {{--            @elseif($n->order_status==0 && $n->pay_way==3)
-                                                <button type="button" class="btn btn-danger btn-rad btn-sm">确认收款</button>--}}
+                                                <button type="button" class="btn btn-primary btn-rad btn-sm md-trigger pay_way" data-modal="payway" data-id="{{$n->id}}">付款方式</button>
+                                                {{--            @elseif($n->order_status==0 && $n->pay_way==3)
+                                                                <button type="button" class="btn btn-danger btn-rad btn-sm">确认收款</button>--}}
                                             @elseif($n->order_status==1)
                                                 <button type="button" class="btn btn-warning btn-rad btn-sm reject" data-id="{{$n->id}}">退货退款</button>
 
@@ -197,8 +266,10 @@
 
                                 </tbody>
                             </table>
+                                </div>
+                            <div class="row"><div class="pull-right" style="padding-right: 20px;">{{$alllist->links()}}</div></div>
                         </div>
-                        <div class="row"><div class="pull-right" style="padding-right: 20px;">{{$alllist->links()}}</div></div>
+
                     </div>
 
 
@@ -209,25 +280,35 @@
         </div>
     </div>
     {{--<button class="btn btn-primary btn-flat md-trigger" data-modal="md-scale"> Fade in &amp; Scale</button>--}}
-    <div class="md-modal md-effect-1" id="md-scale">
-        <div class="md-content" style="box-shadow: 3px 5px 10px 2px #aaa;width: 350px;height: 200px">
-            <div class="modal-header">
-                {{--<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">×</button>--}}
-            </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    <div class="i-circle success"><i class="fa fa-check" id="tips"></i></div>
-                    <h4 id="msg">Awesome!</h4>
-                </div>
-            </div>
-            <div class="modal-footer" style="border: none">
 
-            </div>
-        </div>
-    </div>
 @endsection
 @section('javascript')
     <script>
+
+        $(function(){
+            //Horizontal Icons dataTable
+            var config = {
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }},
+                "bPaginate" : false,
+                "bInfo":false,
+                "iDisplayLength":50,
+                "aaSorting" : [[9, "desc"]],
+            };
+            $('#datatable-icons').dataTable(config);
+            $('.dataTables_filter input').addClass('form-control').attr('placeholder','本页搜索');
+            $('.dataTables_length select').addClass('form-control');
+        })
 
         /*付款方式*/
         $(".pay_way").click(function(){
@@ -280,6 +361,9 @@
         })
         /*退货退款*/
         $(".reject").click(function(){
+            if(!confirm('你确定确定退货吗？操作后不可逆')){
+                return false;
+            }
             var id = $(this).attr('data-id');
             $.post('{{url("/admin/reject")}}',{id:id,_token:"{{csrf_token()}}"},function(data){
                     if(data){
@@ -376,6 +460,10 @@
         $("#downexcel").click(function(){
             $("#getexcel").submit();
         })
+        $("#goscan").click(function(){
+            $("#scan").submit();
+
+        })
 
 $(function(){
     $('#reservationtime').daterangepicker({
@@ -393,14 +481,19 @@ $(function(){
         endDate: moment(),
         minDate: '2017/01/01',
         maxDate: '2050/12/31',
-        dateLimit: { days: 60 },
+        dateLimit: { days: 365*10 },
         showDropdowns: true,
         showWeekNumbers: true,
         timePicker: false,
         timePickerIncrement: 1,
         timePicker12Hour: true,
         ranges: {
-
+            '今天': [moment(), moment()],
+            '昨天': [moment().subtract('days', 1), moment().subtract('days', 1)],
+            '最近七天': [moment().subtract('days', 6), moment()],
+            '最近30天': [moment().subtract('days', 29), moment()],
+            '本月': [moment().startOf('month'), moment().endOf('month')],
+            '上月': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
         },
         opens: 'left',
         buttonClasses: ['btn'],
@@ -411,11 +504,11 @@ $(function(){
         locale: {
             applyLabel: '确定',
             cancelLabel: '取消',
-            fromLabel: 'From',
-            toLabel: 'To',
-            customRangeLabel: '选择时间',
-            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            fromLabel: '开始日期',
+            toLabel: '结束日期',
+            customRangeLabel: '自定义',
+            daysOfWeek: ['日', '一', '二', '三', '四', '五','六'],
+            monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             firstDay: 1
         }
     };
@@ -438,6 +531,7 @@ $(function(){
 
     $('#reportrange').daterangepicker(optionSet1, cb);
     $('#reservation').daterangepicker(optionSet1);
+    $('#reservationss').daterangepicker(optionSet1);
 
 
 })

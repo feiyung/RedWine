@@ -33,6 +33,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('js/jquery.niftymodals/css/component.css')}}" />
     <link href="{{asset('css/style.css')}}" rel="stylesheet" />
     <link href="{{asset('js/jquery.icheck/skins/square/blue.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{asset('js/jquery.datatables/bootstrap-adapter/css/datatables.css')}}" />
 
     {{--kkk--}}
 
@@ -40,7 +41,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('js/bootstrap.switch/bootstrap-switch.min.css')}}" />
 
     <!-- Select2 -->
-    <link rel="stylesheet" type="text/css" href="{{asset('js/jquery.select2/select2.css')}}" />
+    {{--<link rel="stylesheet" type="text/css" href="{{asset('js/jquery.select2/select2.css')}}" />--}}
 
 
 
@@ -57,6 +58,8 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="{{asset('js/dropzone/css/dropzone.css')}}" />
 </head>
 <body>
 
@@ -206,8 +209,12 @@
                         <li><a href="{{url('admin/winelist')}}"><i class="fa fa-list-alt"></i><span>红酒管理</span></a>
                         </li>
 
-                        <li><a href="{{url('admin/orderlist')}}"><i class="fa fa-table"></i><span>订单管理</span></a>
-
+                        <li><a href=""><i class="fa fa-table"></i><span>订单管理</span></a>
+                            <ul class="sub-menu">
+                                <li class="@yield('offline')"><a href="{{url('admin/orderlist')}}">线下订单</a></li>
+                                {{--<li class="@yield('active')"><a href="{{url('admin/adminrole')}}">分组管理</a></li>--}}
+                                <li class="@yield('online')"><a href="{{url('/admin/orderliston')}}">线上订单</a></li>
+                            </ul>
                         </li>
 
                         <li><a href="{{url('admin/customerlist')}}"><i class="fa fa-users"></i><span>客户管理</span></a>
@@ -248,7 +255,7 @@
         </div>
 @show
 
-    <div class="md-modal md-effect-1" id="md-scale">
+    <div class="md-modal colored-header md-effect-1" id="md-scale">
         <div class="md-content"  style="box-shadow: 3px 5px 10px 2px #aaa;width: 350px;height: 200px">
             <div class="modal-header">
                 {{--<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">×</button>--}}
@@ -269,8 +276,9 @@
 </div>
 
 <script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/jquery.form.js')}}"></script>
 <script type="text/javascript"
-src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
+        src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/jquery.sparkline/jquery.sparkline.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/jquery.easypiechart/jquery.easy-pie-chart.js')}}"></script>
 <script src="{{asset('js/jquery.ui/jquery-ui.js')}}" type="text/javascript"></script>
@@ -284,12 +292,15 @@ src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/jquery.niftymodals/js/jquery.modalEffects.js')}}"></script>
 
 
+{{--<script type="text/javascript" src="{{asset('js/dropzone/dropzone.js')}}"></script>--}}
 
 <script src="{{asset('js/jquery.parsley/dist/parsley.js')}}" type="text/javascript"></script>
 <script type="text/javascript" src="{{asset('js/jquery.icheck/icheck.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap.daterangepicker/moment.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap.daterangepicker/daterangepicker.js')}}"></script>
 
+<script type="text/javascript" src="{{asset('js/jquery.datatables/jquery.datatables.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/jquery.datatables/bootstrap-adapter/js/datatables.js')}}"></script>
 {{--<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>--}}
 <script src="{{asset('js/skycons/skycons.js')}}" type="text/javascript"></script>
 {{--<script src="{{asset('js/intro.js/intro.js')}}" type="text/javascript"></script>--}}
@@ -314,9 +325,10 @@ src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
 <script>
     function alertfail(msg){//失败弹窗
         $("#msg").text(msg);
-        $("i.fa").removeClass('fa-check').addClass('fa-times');
+        $("i.fa").removeClass('fa-check').addClass('fa-warning');
         $("div.i-circle").removeClass('success').addClass('danger');
         $("#md-scale").addClass('md-show');
+        $("#md-scale").removeClass('success').addClass('danger');
         setTimeout(function () {
             $("#md-scale").removeClass('md-show');
         }, 2000);
@@ -324,10 +336,10 @@ src="{{asset('js/jquery.nanoscroller/jquery.nanoscroller.js')}}"></script>
     }
     function alertsuccess(msg){//成功弹窗
         $("#msg").text(msg);
-        $("i.fa").removeClass('fa-times').addClass('fa-check');
+        $("i.fa").removeClass('fa-warning').addClass('fa-check');
         $("div.i-circle").removeClass('danger').addClass('success');
-
         $("#md-scale").addClass('md-show');
+        $("#md-scale").removeClass('danger').addClass('success');
         setTimeout(function () {
             $("#md-scale").removeClass('md-show');
         }, 2000)

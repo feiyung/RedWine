@@ -107,6 +107,7 @@ class AdminController extends Controller
         session(['info' => json_encode($info), 'ad_name' => $info->ad_name]);
         Session::save();
         $admin->loginTime($info->ad_id);
+        actionLog($info->ad_name.'：登录成功！');
         trueAjax('');
     }
 

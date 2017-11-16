@@ -199,7 +199,7 @@
                 return false;
             }
             re = /^1[34578][0-9]{9}$/
-            if (!re.test(buy_tel)) {
+            /*if (!re.test(buy_tel)) {
 
                 alertfail("请输入合法手机号！");
                 return false;
@@ -207,7 +207,7 @@
             if(!buy_addr.length){
                 alertfail('客户地址不能为空！');
                 return false;
-            }
+            }*/
             $.post('{{url('/admin/addcustomer')}}',{buy_name:buy_name,buy_tel:buy_tel,buy_addr:buy_addr,_token:"{{csrf_token()}}"},function(data){
                 if(data.flag){
                     alertsuccess(data.msg);

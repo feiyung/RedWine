@@ -29,12 +29,17 @@ class WineOrder extends Model
 
     public function getOrderList()
     {
-        $result = $this->orderBy('create_time', 'desc')->paginate(20);;
+        $result = $this->orderBy('create_time', 'desc')->paginate(80);;
         return $result;
     }
-    /*根据时间段获取订单列表*/
+    /*根据时间段获取所有订单列表*/
     public function getList($time1,$time2){
         $result = $this->whereBetween('create_time',[$time1,$time2])->orderBy('create_time', 'desc')->get();;
+        return $result;
+    }
+    /*根据时间段获取订单列表分页*/
+    public function getListpage($time1,$time2){
+        $result = $this->whereBetween('create_time',[$time1,$time2])->orderBy('create_time', 'desc')->paginate(1);;
         return $result;
     }
 

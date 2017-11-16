@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Model\AdminLog;
 use App\Model\Customer;
+use App\Model\OrderOnline;
 use App\Model\RedWine;
 use App\Model\WineOrder;
 use Illuminate\Http\Request;
@@ -53,10 +54,9 @@ class RedWineController extends Controller
 //        dd($data);
         $result = $redWine->addWine($data);
         if ($result) {
-            actionLog('添加红酒成功！编号：'.$result.'，红酒名：'.$data['wine_name'].'，单价：'.$data['price'].'元，库存：'.$data['sku_num']);
+            actionLog('添加红酒成功！编号：'.$result.'，红酒名：'.$data['wine_name'].'，库存：'.$data['sku_num']);
             trueAjax('添加红酒成功！');
         } else {
-            actionLog('添加红酒成功！编号：'.$result);
             falseAjax('添加红酒失败');
         }
 
@@ -83,7 +83,8 @@ class RedWineController extends Controller
         $data = [
             'price'=>$input['price_in'],
             'price_c'=>$input['price_c'],
-            'price_line'=>$input['price_line']
+            'price_line'=>$input['price_line'],
+            'sales_num'=>$input['sales_num']
         ];
         $data['wine_name'] = $input['wine_name'];
         $data['sku_num'] = $input['sku_num'];
@@ -95,20 +96,63 @@ class RedWineController extends Controller
             actionLog('编辑红酒成功！编号：'.$input['id'].'，红酒名：'.$data['wine_name'].'，单价：'.$data['price'].'元，库存：'.$data['sku_num']);
             trueAjax('修改成功！');
         } else {
-            actionLog('编辑红酒成功！编号：'.$input['id']);
             falseAjax('修改失败');
         }
 
     }
 
     /*
-     * 订单列表
+     * 订单列表线下
      */
     public function orderList()
     {
         $wineOrder = new WineOrder();
         $alllist = $wineOrder->getOrderList();
         return view('redWine.wineorderlist', compact('alllist'));
+    }
+
+    /*分时段查看*/
+    public function scan(Request $request){
+        $today_start = '';
+        $today_end = '';
+        /*if ($request->time==="today"){//今天
+            $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+            $today_end=mktime(23, 59, 59,date('m'),date('d'),date('Y'));
+        }elseif($request->time==="month"){//本月
+            $today_start=mktime(0,0,0,date('m'),1,date('Y'));
+            $today_end=mktime(23,59,59,date('m'),date('t'),date('Y'));
+        }elseif($request->time==="year"){//本年
+            $today_start=mktime(0,0,0,1,1,date('Y'));
+            $today_end=mktime(23,59,59,date('m'),date('t'),date('Y'));
+        }else*/
+
+            if ($request->time==="range"){//自定义范围
+                if(empty($request->timerange) && empty($request->page)){
+                        $today_start = 0;
+                        $today_end = time();
+                    }elseif(isset($request->page)&&!empty($request->page)){
+                        $today_start = Session::get('today_start');
+                        $today_end = Session::get('today_end');
+                        if(empty($today_start) || empty($today_end)){
+                            echo "<script>alert('请重新选择时间！');location.href='/admin/orderlist';</script>";
+                            exit();
+                        }
+                }else{
+                        $time = explode(' - ',$request->timerange);
+                        $today_start =  strtotime($time[0]);
+                        $today_end =  mktime(23, 59, 59,date('m',strtotime($time[1])),date('d',strtotime($time[1])),date('Y',strtotime($time[1])));
+                    }
+                session(['today_start'=>$today_start]);
+                Session::save();
+                session(['today_end'=>$today_end]);
+                Session::save();/*dd(session('today_end'));*/
+
+
+        }
+        $order = new WineOrder();
+        $alllist = $order->getListpage($today_start,$today_end);
+        return view('redWine.wineorderlist', compact('alllist'));
+
     }
 
     /*
@@ -122,7 +166,8 @@ class RedWineController extends Controller
         $info = json_decode(session('info'), true);
         $input = Input::all();
         $res = $redWine->getOne($input['id']);
-        if ($res->sku_num < $input['wine_num']) {
+        $sku_now = $res->sku_num - $res->sales;
+        if ($sku_now < $input['wine_num']) {
             falseAjax('库存不足！');
         }
         $cus_info = $customer->getOneInfo(['id'=>$input['cus_id']]);
@@ -139,6 +184,8 @@ class RedWineController extends Controller
         $data['debt_price'] = $data['total_price'];
         $data['create_time'] = time();
         $data['update_time'] = $data['create_time'];
+        $data['san_num'] = $input['san_num'];
+        $data['sendway'] = $input['sendway'];
         do {//确保订单号唯一
             $data['order_num'] = date('Ymd') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
             $con = $wineOrder->getOrderCount($data['order_num']);
@@ -148,10 +195,10 @@ class RedWineController extends Controller
         $result = $wineOrder->addWineOrder($data);
         /*库存销量更新*/
         $update['sales_num'] = $res->sales_num + $input['wine_num'];
-        $update['sku_num'] = $res->sku_num - $input['wine_num'];
+       /* $update['sku_num'] = $res->sku_num - $input['wine_num'];*/
         if ($result) {
             $redWine->updateWine($input['id'], $update);
-            actionLog('创建订单成功,订单号：'.$data['order_num'].'，客户名:'.$data['buy_name']);
+            actionLog('创建订单成功,订单号：'.$data['order_num'].'，客户名:'.$data['buy_name'].'，数量：'.$input['wine_num']);
             trueAjax('创建订单成功！');
         } else {
             actionLog('创建订单失败');
@@ -192,7 +239,7 @@ class RedWineController extends Controller
         $paycontroller->Alipay($out_trade_no, $subject, $total_fee, $body);
     }
 
-    /*订单线详情*/
+    /*线下订单详情*/
     public function detail(Request $request)
     {
         $wineOrder = new WineOrder();
@@ -252,13 +299,80 @@ class RedWineController extends Controller
         $result = $wineorder->updatesOrder($input['id']);
         $one = $wineorder->getOneorder($input['id']);//订单信息
         $res = $redwine->getOne($one['wine_id']);//红酒信息
-        $sku = $res['sku_num']+$one['wine_num'];//返回库存
+        /*$sku = $res['sku_num']+$one['wine_num'];//返回库存*/
         $sales = $res['sales_num']-$one['wine_num'];//减少销量
-        $redwine->updateWine($one['wine_id'],['sku_num'=>$sku,'sales_num'=>$sales]);
+        $redwine->updateWine($one['wine_id'],['sales_num'=>$sales]);
         if($result){
             actionLog('订单号：'.$one['order_num'].',退货退款成功,'.$one['wine_num'].'瓶'.$one['wine_name'].'返回库存!');
             trueAjax('退货退款成功！');
         }
+    }
+    /*线上订单导入*/
+    public function importExcel(Request $request){
+
+
+        //$filePath = $request->file('file')->storeAs('uploads','taobao.xls');
+        /*Excel::filter('chunk')->load($request->file('file')->getRealPath())->chunk(250000, function($results)
+        {
+            dd($results);
+            foreach($results as $row)
+            {
+                dd($row);
+            }
+        });*/
+        $orderon = new OrderOnline();
+        Excel::load($request->file('file')->getRealPath(), function($reader) use ($orderon) {
+
+
+            // Getting all results
+            $time = time();
+            $reader->noHeading();
+            $results = $reader->get()->toArray();
+            unset($results[0]);
+            $datas = [];
+            $item = [];
+            foreach($results as $key => $val){
+
+
+                    $item['order_sn'] = $val[0];
+                    $item['total_price'] = $val[1];
+                    $item['goods_name'] = $val[2];
+                    $item['goods_num'] = $val[3];
+                    $item['real_pay'] = $val[4];
+                    $item['freight'] = $val[5];
+                    $item['receiver_name'] = $val[6];
+                    $item['address'] = $val[7];
+                    $item['send_way'] = $val[8];
+                    $item['mobile'] = $val[9];
+                    $item['order_cretime'] = $val[10]->toDateTimeString();
+                    $item['order_paytime'] = $val[11]->toDateTimeString();
+                    $item['logistics_num'] = $val[12];
+                    $item['logistics_company'] = $val[13];
+                    $item['create_time'] = $time;
+                    $item['update_time'] = $time;
+
+                $datas[] = $item;
+
+            }
+            //dd($datas);
+            $res = $orderon->Import($datas);
+            if($res){
+                echo 1;
+            }else{
+                echo 0;
+            }
+
+
+
+
+
+        },'UTF-8');
+    }
+    /*线上订单列表*/
+    public function onlineOrderList(){
+        $orderon = new OrderOnline();
+        $list = $orderon->getOrderOnList();
+        return view('redWine.orderlistonline',compact('list'));
     }
 
     /*客户列表*/

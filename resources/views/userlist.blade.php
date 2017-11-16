@@ -45,8 +45,8 @@
                                             <div class="col-sm-7">
                                                 <input type="email" required=""
                                                        class="form-control" id="inputEmail3"
-                                                       placeholder="长度不超过10位" name="uname"
-                                                       data-parsley-id="5250" maxlength="10" minlength="3">
+                                                       placeholder="长度不超过20位" name="uname"
+                                                       data-parsley-id="5250" maxlength="20" minlength="3">
 
                                             </div>
                                         </div>
@@ -114,8 +114,8 @@
                                             <div class="col-sm-7">
                                                 <input type="email" required=""
                                                        class="form-control" id="inputEmail3"
-                                                       placeholder="长度不超过10位" name="uname_e"
-                                                       data-parsley-id="5250" maxlength="10" minlength="3">
+                                                       placeholder="长度不超过20位" name="uname_e"
+                                                       data-parsley-id="5250" maxlength="20" minlength="3">
 
                                             </div>
                                         </div>

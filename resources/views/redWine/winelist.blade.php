@@ -4,6 +4,12 @@
 @endsection
 
 @section('content')
+    <style>
+        .select2-chosen{
+            display: inline-block;
+            min-height: 26px;
+        }
+    </style>
     <div class="container-fluid">
         <div class="page-head">
             <h2>红酒列表</h2>
@@ -153,10 +159,18 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">库存</label>
+                                            <label class="col-sm-3 control-label">总库存</label>
                                             <div class="col-sm-7">
                                                 <input type="text" required="" class="form-control"
                                                        id="inputPassword3" placeholder="长度0~10" name="sku_num_e"
+                                                       data-parsley-id="2907" maxlength="10" minlength="0">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">销量</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" required="" class="form-control"
+                                                       id="inputPassword3" placeholder="长度0~10" name="sales_num_e"
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
                                             </div>
                                         </div>
@@ -218,62 +232,47 @@
                                                        data-parsley-id="2907" maxlength="10" minlength="0">
                                             </div>
                                         </div>
-                                        {{--<div class="form-group">
-                                            <label class="col-sm-3 control-label">客户姓名</label>
-                                            <div class="col-sm-7">
-                                                <input type="text" required="" class="form-control"
-                                                       id="inputPassword3" placeholder="长度不超过10位" name="buy_name"
-                                                       data-parsley-id="2907" maxlength="10" minlength="0">
-                                            </div>
-                                        </div>--}}
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">选择客户</label>
-                                            <input type="hidden" required="" class="form-control"
-                                                   id="inputPassword3" placeholder="长度不超过10位" name="buy_name"
-                                                   data-parsley-id="2907" maxlength="10" minlength="0">
-
-                                                <input type="hidden" required="" class="form-control"
-                                                       id="inputPassword3" placeholder="长度不超过11位" name="buy_tel"
-                                                       data-parsley-id="2907" maxlength="11" minlength="0">
-
                                             <div class="col-sm-7">
-                                                <select class="form-control" name="customer">
+                                                <select class="select2" name="customer">
                                                     <option value=""></option>
                                                     @foreach($customerlist as $c)
                                                         <option value="{{$c->id}}" data-tel="{{$c->cus_tel}}" data-name="{{$c->cus_name}}">{{$c->cus_name}}</option>
                                                     @endforeach
-
                                                 </select>
                                             </div>
+                                            <input type="hidden" required="" class="form-control"
+                                                         id="" placeholder="长度不超过10位" name="buy_name"
+                                                         data-parsley-id="2907" maxlength="10" minlength="0">
+
+                                            <input type="hidden" required="" class="form-control"
+                                                   id="" placeholder="长度不超过11位" name="buy_tel"
+                                                   data-parsley-id="2907" maxlength="11" minlength="0">
+
                                             <input type="hidden" value="" name="cus_id">
                                         </div>
-
-
-                                        {{--<div class="form-group">
-                                            <label class="col-sm-3 control-label">已有客户</label>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">三联单号</label>
                                             <div class="col-sm-7">
-                                                <div class="panel-group accordion" id="accordion">
+                                                <input type="text" required="" class="form-control"
+                                                       id="" placeholder="" name="san_num"
+                                                       data-parsley-id="2907" maxlength="20" minlength="0">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">出货方式</label>
+                                            <div class="col-sm-7">
 
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">
-                                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" style="padding: 7px 16px">
-                                                                    <i class="fa fa-angle-right"></i> 选择
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="collapseThree" class="panel-collapse collapse">
-                                                            <div class="panel-body">
-                                                                <div class="form-group">
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div class="radio-inline">
+                                                    <label> <input type="radio" checked name="sendway" class="icheck" value="1"> 自提</label>
+                                                </div>
+                                                <div class="radio-inline">
+                                                    <label> <input type="radio" name="sendway" class="icheck" value="2"> 快递</label>
                                                 </div>
                                             </div>
-                                        </div>--}}
+                                        </div>
+
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -296,9 +295,10 @@
                                     <th >内部单价(RMB)</th>
                                     <th >线上单价(RMB)</th>
                                     <th >经销商单价(RMB)</th>
+                                    <th>总库存(瓶)</th>
                                     <th>销量(瓶)</th>
-                                    <th>库存(瓶)</th>
-                                    <th>描述</th>
+                                    <th>现库存(瓶)</th>
+                                    {{--<th>描述</th>--}}
                                     <th class="text-right">操作</th>
                                 </tr>
                                 </thead>
@@ -310,9 +310,10 @@
                                         <td style="vertical-align: middle">&yen;{{number_format($n->price)}}</td>
                                         <td style="vertical-align: middle">&yen;{{number_format($n->price_line)}}</td>
                                         <td style="vertical-align: middle">&yen;{{number_format($n->price_c)}}</td>
-                                        <td style="vertical-align: middle">{{$n->sales_num}}</td>
                                         <td style="vertical-align: middle">{{$n->sku_num}}</td>
-                                        <td style="vertical-align: middle">{{$n->description}}</td>
+                                        <td style="vertical-align: middle">{{$n->sales_num}}</td>
+                                        <td style="vertical-align: middle">{{$n->sku_num-$n->sales_num}}</td>
+                                        {{--<td style="vertical-align: middle">{{$n->description}}</td>--}}
                                         <td style="vertical-align: middle" class="text-right">
                                             {{--@if($n->status)
 
@@ -345,22 +346,7 @@
         </div>
     </div>
     {{--<button class="btn btn-primary btn-flat md-trigger" data-modal="md-scale"> Fade in &amp; Scale</button>--}}
-    <div class="md-modal md-effect-1" id="md-scale">
-        <div class="md-content" style="box-shadow: 3px 5px 10px 2px #aaa;width: 350px;height: 200px">
-            <div class="modal-header">
-                {{--<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">×</button>--}}
-            </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    <div class="i-circle success"><i class="fa fa-check" id="tips"></i></div>
-                    <h4 id="msg">Awesome!</h4>
-                </div>
-            </div>
-            <div class="modal-footer" style="border: none">
 
-            </div>
-        </div>
-    </div>
 @endsection
 @section('javascript')
     <script>
@@ -427,6 +413,7 @@
                         $("input[name='price_line_e']").val(data.data.price_line);
                         $("input[name='price_in_e']").val(data.data.price);
                         $("input[name='sku_num_e']").val(data.data.sku_num);
+                        $("input[name='sales_num_e']").val(data.data.sales_num);
                         $("textarea[name='desc_e']").val(data.data.description);
                         $("#submit_e").attr('data-id',data.data.id);
 
@@ -440,6 +427,7 @@
             var price_line = $("input[name='price_line_e']").val();//线上价
             var price_c = $("input[name='price_c_e']").val();//经销商价
             var sku_num = $("input[name='sku_num_e']").val();
+            var sales_num = $("input[name='sales_num_e']").val();
             var desc = $("textarea[name='desc_e']").val();
             var id = $(this).attr('data-id');
             if(!wine_name.length){
@@ -464,12 +452,18 @@
                 alertfail('请输入有效库存！');
                 return false;
             }
+            var reg_sales = /^[0-9]\d*$/;
+            if(!reg_sales.test(sales_num)){
+                alertfail('请输入有效数字！');
+                return false;
+            }
             $.post('{{url('/admin/updwine')}}', {
                 wine_name: wine_name,
                 price_c: price_c,
                 price_in:price_in,
                 price_line:price_line,
                 sku_num: sku_num,
+                sales_num:sales_num,
                 desc:desc,
                 id:id,
                 _token: "{{csrf_token()}}"
@@ -517,9 +511,10 @@
             var wine_num = $("input[name='wine_num']").val();
             var buy_name = $("input[name='buy_name']").val();
             var buy_tel = $("input[name='buy_tel']").val();
+            var sendway = $("input[name='sendway']").val();
+            var san_num = $("input[name='san_num']").val();
             var id = $(this).attr('data-id');
             var cus_id = $("input[name='cus_id']").val();
-            $("input[name='cus_id']").val('');
             if(!wine_name.length){
                 alertfail('红酒名称不能为空！');
                 return false;
@@ -546,6 +541,10 @@
                 alertfail("请输入合法手机号！");
                 return false;
             }
+            if(!san_num.length){
+                alertfail("三联单号不能为空！");
+                return false;
+            }
 
 
 
@@ -555,6 +554,8 @@
                 wine_num:wine_num,
                 buy_name:buy_name,
                 buy_tel:buy_tel,
+                sendway:sendway,
+                san_num:san_num,
                 id:id,
                 cus_id:cus_id,
                 _token: "{{csrf_token()}}"
