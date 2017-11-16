@@ -180,7 +180,7 @@
                 "bPaginate" : false,
                 "bInfo":false,
                 "iDisplayLength":50,
-                "aaSorting" : [[8, "desc"]]
+                "aaSorting" : [[9, "desc"]]
             };
             $('#datatable-icons').dataTable(config);
             $('.dataTables_filter input').addClass('form-control').attr('placeholder','本页搜索');
