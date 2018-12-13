@@ -71,7 +71,7 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="fa fa-gear"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>玛丝特红酒管理</span></a>
+            <a class="navbar-brand" href="#"><span>管理</span></a>
         </div>
         <div class="navbar-collapse collapse">
             {{--<ul class="nav navbar-nav">--}}
